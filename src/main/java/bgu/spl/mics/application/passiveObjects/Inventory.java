@@ -78,3 +78,5 @@ public class Inventory {
 		return this.gadgets;
 	}
 }
+
+//TEST 1,2,1
