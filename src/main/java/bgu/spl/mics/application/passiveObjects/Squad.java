@@ -53,7 +53,7 @@ public class Squad {
 	/**
 	 * Releases agents.
 	 */
-	public void releaseAgents(List<String> serials){	//TODO check what happens when we release while other try to acquire
+	public void releaseAgents(List<String> serials){	//TODO check what happens when we release while other try to acquire and if needed to notifyall after
 		for(String serial: serials) {
 			if(!agents.containsKey(serial)) {	//for each agent, if is in the squad- release.
 				System.out.println(serial+" is not existed");
