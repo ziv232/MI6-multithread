@@ -32,8 +32,13 @@ public class Future<T> {
      */
 	public T get() {
 		//TODO: implement this.
-		while(answer==null) {
-			
+		while(!isDone()) {
+			try{
+				wait();
+			}
+			catch (InterruptedException e){
+				Thread.currentThread().interrupt();
+			}
 		}
 		return answer;
 	}
@@ -68,12 +73,16 @@ public class Future<T> {
      */
 	public T get(long timeout, TimeUnit unit) {
 		//TODO: implement this.
+		long miliSec=unit.toMillis(timeout);
 		
-		if(answer==null) {
-			
+		if(!isDone()) {		//TODO check if instead of while
+			try{
+				wait(miliSec);
+			}
+			catch (InterruptedException e){
+				Thread.currentThread().interrupt();
+			}
 		}
-		
-		
 		return answer;
 	}
 
