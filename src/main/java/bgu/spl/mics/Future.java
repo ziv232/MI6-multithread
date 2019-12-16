@@ -41,10 +41,10 @@ public class Future<T> {
 	/**
      * Resolves the result of this Future object.
      */
-	public void resolve (T result) {
-		//TODO: implement this.
+	public synchronized void resolve (T result) {//Changed to Synchronized
 		isdone=true;
 		answer=result;
+		notifyAll();//Notify to all the threads that waiting for a result.
 		
 	}
 	
@@ -52,7 +52,6 @@ public class Future<T> {
      * @return true if this object has been resolved, false otherwise
      */
 	public boolean isDone() {
-		//TODO: implement this.
 		return isdone;
 	}
 	
