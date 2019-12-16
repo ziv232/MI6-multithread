@@ -12,8 +12,10 @@ import java.util.List;
  * You can add ONLY private fields and methods to this class as you see fit.
  */
 public class Inventory {
+	private  static  class InventoryHolder{
+		private static Inventory instance = new Inventory();
+	}
 	private List<String> gadgets;
-	private static Inventory instance = null;
 	/**
      * Retrieves the single instance of this class.
      */
@@ -22,15 +24,7 @@ public class Inventory {
 		this.gadgets = new ArrayList<String>();
 	}
 	public static Inventory getInstance() {
-		if(instance == null) {
-			synchronized(Inventory.class) {
-				if(instance == null) {
-					instance = new Inventory();
-				}
-            }
-		}
-		return instance;
-		
+		return InventoryHolder.instance;
 	}
 
 	/**
