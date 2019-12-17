@@ -9,7 +9,7 @@ import java.util.concurrent.*;
 public class MessageBrokerImpl implements MessageBroker {
 
 	private ConcurrentHashMap<Subscriber,LinkedBlockingQueue<Message>> mapOfSubscribers;	//not sure about the key and the value, we need a Queue
-//	private ConcurrentHashMap<>mapOfTopics;	TODO
+	private ConcurrentHashMap<Class<? extends Message>,LinkedBlockingQueue<Subscriber>> mapOfTopics;	//check
 	private ConcurrentHashMap<Event,Future> mapOfEvents;
 
 	private static class MessageBrokerHolder{
@@ -28,14 +28,16 @@ public class MessageBrokerImpl implements MessageBroker {
 
 
 	@Override
-	public <T> void subscribeEvent(Class<? extends Event<T>> type, Subscriber m) {
+	public <T> void subscribeEvent(Class<? extends Event<T>> type, Subscriber m) {	//find the right type and add the sub to the right queue
 		// TODO Auto-generated method stub
+		mapOfTopics.get(type).add(m);
 
 	}
 
 	@Override
 	public void subscribeBroadcast(Class<? extends Broadcast> type, Subscriber m) {
 		// TODO Auto-generated method stub
+//		mapOfTopics.get(type)
 
 	}
 
