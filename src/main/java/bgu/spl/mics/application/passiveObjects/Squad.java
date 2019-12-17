@@ -1,4 +1,5 @@
 package bgu.spl.mics.application.passiveObjects;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -11,38 +12,29 @@ import java.util.TreeMap;
  */
 public class Squad {
 
+	private static class SquadHolder{
+		private static Squad instance=new Squad();
+	}
+
 	private Map<String, Agent> agents;
-//	private static Squad instance=null;
-	
-	
-//	private Squad() {
-//		agents=new TreeMap<String, Agent>();
-//	}
 
 	/**
 	 * Retrieves the single instance of this class.
 	 */
-	public static synchronized Squad getInstance() {
-		//TODO: Implement this
-//		if(instance==null) {
-//			instance=new Squad();
-//		}
-//		
-//		return instance;
-		return null;
-	}
+	public static Squad GetInstance() {return SquadHolder.instance;}
+
 	
 	
-	public int getMapSize() {
+	private int getMapSize() {
 		return agents.size();
 	}
 	
-	
-	public Map<String,Agent> getAgentsMap() {
-		return agents;
-	}
-	
-	public Agent getAgent(String serialNumber) {
+
+//	private Map<String,Agent> getAgentsMap() {
+//		return agents;
+//	}
+
+	private Agent getAgent(String serialNumber) {
 		return agents.get(serialNumber);
 	}
 
@@ -52,16 +44,16 @@ public class Squad {
 	 * @param agents 	Data structure containing all data necessary for initialization
 	 * 						of the squad.
 	 */
-	public void load (Agent[] agents) {
-		for(int i=0;i<agents.length;i++) {
-			this.agents.put(agents[i].getSerialNumber(), agents[i]);	//add agent to map			
+	public synchronized void load (Agent[] agents) {	//TODO CHECK AGENTS THAT DOESN'T START WITH 00
+		for (Agent agent : agents) {
+			this.agents.put(agent.getSerialNumber(), agent);    //add agent to map
 		}
 	}
 
 	/**
 	 * Releases agents.
 	 */
-	public void releaseAgents(List<String> serials){
+	public void releaseAgents(List<String> serials){	//TODO check what happens when we release while other try to acquire and if needed to notifyall after
 		for(String serial: serials) {
 			if(!agents.containsKey(serial)) {	//for each agent, if is in the squad- release.
 				System.out.println(serial+" is not existed");
@@ -89,19 +81,31 @@ public class Squad {
 	 */
 	public boolean getAgents(List<String> serials){
 		// TODO Implement this
-		for(int i=0;i<serials.size();i++) {		//check for each number if it exists
-			if(getAgent(serials.get(i))==null) {
+		for (String serial : serials) {        //check for each number if it exists
+			if (getAgent(serial) == null) {
 				//TODO AGENT NOT EXIST
-				System.out.println("agent"+serials.get(i)+" is not exist");
+				System.out.println("agent" + serial + " is not exist");
 				return false;
-			}
-			else {
-				if(!getAgent(serials.get(i)).isAvailable())	//check that each agent is avaliable
+			} else {
+				if (!getAgent(serial).isAvailable())    //check that each agent is avaliable
 					return false;
 			}
 		}
-		for(int i=0;i<serials.size();i++) {	//acquire each agent of the list
-			getAgent(serials.get(i)).acquire();
+		return acquireAgents(serials);
+	}
+
+	/**
+	 * check again if none of the agents of the list got acqired in the meanwhile, and acquire them all if possible
+	 * @param serials	list of serial numbers of the agents to acquire
+	 * @return 'true' if none got some agent in the meanwhile or 'false' else
+	 */
+	private synchronized boolean acquireAgents(List<String> serials){
+		for (String serial : serials) {
+			if (!getAgent(serial).isAvailable())    //check that each agent is avaliable
+				return false;
+		}
+		for (String serial : serials) {
+			getAgent(serial).acquire();
 		}
 		return true;
 	}
@@ -112,8 +116,10 @@ public class Squad {
      * @return a list of the names of the agents with the specified serials.
      */
     public List<String> getAgentsNames(List<String> serials){
-        // TODO Implement this
-	    return null;
+		List<String> toReturn= new ArrayList<>();
+		for(String serialNum: serials){
+			toReturn.add(agents.get(serialNum).getName());
+		}
+	    return toReturn;
     }
-
 }
