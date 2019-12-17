@@ -30,9 +30,6 @@ public class Q extends Subscriber {
 			Thread.currentThread().interrupt();
 		}
 			//TODO continue
-
-
-
 	}
 
 }

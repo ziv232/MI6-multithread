@@ -87,6 +87,8 @@ public abstract class Subscriber extends RunnableSubPub {
      */
     protected final <T> void complete(Event<T> e, T result) {
         //TODO: implement this.
+        MessageBrokerImpl.getInstance().complete(e,result);
+        notifyAll();
     }
 
     /**
@@ -105,7 +107,6 @@ public abstract class Subscriber extends RunnableSubPub {
     public final void run() {
         initialize();
         while (!terminated) {
-            System.out.println("NOT IMPLEMENTED!!!"); //TODO: you should delete this line :)
         }
     }
 
