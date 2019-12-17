@@ -25,8 +25,6 @@ public class MessageBrokerImpl implements MessageBroker {
 	}
 
 
-
-
 	@Override
 	public <T> void subscribeEvent(Class<? extends Event<T>> type, Subscriber m) {	//find the right type and add the sub to the right queue
 		// TODO Auto-generated method stub
@@ -37,7 +35,7 @@ public class MessageBrokerImpl implements MessageBroker {
 	@Override
 	public void subscribeBroadcast(Class<? extends Broadcast> type, Subscriber m) {
 		// TODO Auto-generated method stub
-//		mapOfTopics.get(type)
+		mapOfTopics.get(type).add(m);
 
 	}
 
@@ -77,8 +75,7 @@ public class MessageBrokerImpl implements MessageBroker {
 	@Override
 	public Message awaitMessage(Subscriber m) throws InterruptedException {
 		// TODO Auto-generated method stub
-
-		return null;
+		return mapOfSubscribers.get(m).poll();	//TODO we just removed the first message, but we did nothing
 	}
 
 	
