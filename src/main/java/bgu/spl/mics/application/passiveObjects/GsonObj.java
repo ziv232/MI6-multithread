@@ -20,6 +20,7 @@ public class GsonObj {
     public class GsonService{
         public int M;
         public int Moneypenny;
+        public int time;
         public GsonMissions[] intelligence;
 
 

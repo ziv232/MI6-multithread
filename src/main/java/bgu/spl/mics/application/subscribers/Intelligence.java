@@ -15,8 +15,8 @@ import java.util.List;
 public class Intelligence extends Subscriber {
 	private List<MissionInfo> missions;
 
-	public Intelligence() {
-		super("Change_This_Name");
+	public Intelligence(String name) {
+		super(name);
 		// TODO Implement this
 	}
 
