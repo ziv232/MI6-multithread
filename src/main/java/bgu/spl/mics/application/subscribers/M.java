@@ -24,7 +24,7 @@ public class M extends Subscriber {
 	protected void initialize() {
 		// TODO Implement this
 		MessageBrokerImpl.getInstance().register(this);
-		MessageBrokerImpl.getInstance().subscribeEvent(MissionReceivedEvent.class,this);
+//		MessageBrokerImpl.getInstance().subscribeEvent(MissionReceivedEvent.class,this);
 
 		Callback<MissionReceivedEvent> missionReceivedCallback=c -> {
 			//TODO add to the diary

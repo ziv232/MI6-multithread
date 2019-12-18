@@ -63,6 +63,7 @@ public class Squad {
 			agents.get(serial).release();
 		}
 		// TODO Implement this
+		notifyAll();	//released all the agents, now threads can look for them
 	}
 
 	/**
@@ -78,28 +79,29 @@ public class Squad {
 	 * @param serials   the serial numbers of the agents
 	 * @return ‘false’ if an agent of serialNumber ‘serial’ is missing, and ‘true’ otherwise
 	 */
-	public boolean getAgents(List<String> serials){
+	public boolean getAgents(List<String> serials) {
 		// TODO Implement this
-		for (String serial : serials) {        //check for each number if it exists
-//			if (getAgent(serial) == null) {
-//				//TODO AGENT NOT EXIST
-//				System.out.println("agent" + serial + " is not exist");
-//				return false;
-//			}
-
-			while(!getAgent(serial).isAvailable()) {	//we got only 1 semaphore therefore
-				try{
-					wait();
-				}
-				catch (InterruptedException e){
-					Thread.currentThread().interrupt();
-				}
-				if (getAgent(serial).isAvailable()) {
-					getAgent(serial).acquire();
+		boolean done=false;
+		while (!done) {
+			for (int i = 0; i < serials.size(); i++) {
+				if (!getAgent(serials.get(i)).isAvailable()) {    //if agent is unavailable- we check the loop from the start
+					try {
+						wait();
+						i = -1;
+					} catch (InterruptedException e) {
+						Thread.currentThread().interrupt();
+					}
 				}
 			}
+
+//			while(!getAgent(serial).isAvailable()) {	//we got only 1 semaphore therefore
+//				if (getAgent(serial).isAvailable()) {
+//					getAgent(serial).acquire();
+//				}
+//			}
+			done=acquireAgents(serials);
 		}
-		return acquireAgents(serials);
+		return done;
 	}
 
 	/**
