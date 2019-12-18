@@ -27,7 +27,7 @@ public class Q extends Subscriber {
 		MessageBrokerImpl.getInstance().subscribeEvent(GadgetAvailableEvent.class,this);
 		Callback<GadgetAvailableEvent>gadgetCallback= c ->  {
 			if(Inventory.getInstance().getItem(c.getGadget())){
-				complete(c,"true");		//TODO CHECK
+				complete(c,"true");		//TODO CHECK if complete of broker or this
 			}
 			else{
 				complete(c,"false");

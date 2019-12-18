@@ -49,6 +49,7 @@ public class Inventory {
 	public boolean getItem(String gadget){
 		for(int i=0;i<this.gadgets.size();i++) {
 			if(gadget.equals(this.gadgets.get(i))) {
+				gadgets.remove(i);	//check, after we found the gadget we remove it from the list
 				return true;
 			}
 		}
