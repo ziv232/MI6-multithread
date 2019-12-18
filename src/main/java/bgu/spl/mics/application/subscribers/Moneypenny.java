@@ -30,14 +30,15 @@ public class Moneypenny extends Subscriber {
 
 		Callback<AgentsAvailableEvent> AgentsEventCallback= c -> {
 			ArrayList<String>AgentsForMission= (ArrayList<String>) c.getAgentsListForMission();
-			while(!Squad.GetInstance().getAgents(AgentsForMission)){
-				try{
-					wait();
-				}
-				catch (InterruptedException e){
-					Thread.currentThread().interrupt();
-				}
-			}
+//			while(!Squad.GetInstance().getAgents(AgentsForMission)){
+//				try{
+//					wait();
+//				}
+//				catch (InterruptedException e){
+//					Thread.currentThread().interrupt();
+//				}
+//			}
+			Squad.GetInstance().getAgents(AgentsForMission);	//TODO will always be true eventually
 			complete(c,true);	//TODO Hypoteticly i return true, but if we need to abort i need to return false
 		};	//callback
 

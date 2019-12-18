@@ -140,6 +140,7 @@ public abstract class Subscriber extends RunnableSubPub {
                 Thread.currentThread().interrupt();
             }
         }
+        MessageBrokerImpl.getInstance().unregister(this);   //TODO check about the unsubscribe too
     }
 
 }
