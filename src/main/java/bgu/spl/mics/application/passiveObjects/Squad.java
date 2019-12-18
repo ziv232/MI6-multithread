@@ -1,8 +1,6 @@
 package bgu.spl.mics.application.passiveObjects;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
+import java.util.concurrent.Semaphore;
 
 /**
  * Passive data-object representing a information about an agent in MI6.
@@ -16,7 +14,8 @@ public class Squad {
 		private static Squad instance=new Squad();
 	}
 
-	private Map<String, Agent> agents;
+	private Map<String, Agent> agents= new HashMap<>();
+	private Semaphore semaphore=new Semaphore(1);
 
 	/**
 	 * Retrieves the single instance of this class.
@@ -82,13 +81,22 @@ public class Squad {
 	public boolean getAgents(List<String> serials){
 		// TODO Implement this
 		for (String serial : serials) {        //check for each number if it exists
-			if (getAgent(serial) == null) {
-				//TODO AGENT NOT EXIST
-				System.out.println("agent" + serial + " is not exist");
-				return false;
-			} else {
-				if (!getAgent(serial).isAvailable())    //check that each agent is avaliable
-					return false;
+//			if (getAgent(serial) == null) {
+//				//TODO AGENT NOT EXIST
+//				System.out.println("agent" + serial + " is not exist");
+//				return false;
+//			}
+
+			while(!getAgent(serial).isAvailable()) {	//we got only 1 semaphore therefore
+				try{
+					wait();
+				}
+				catch (InterruptedException e){
+					Thread.currentThread().interrupt();
+				}
+				if (getAgent(serial).isAvailable()) {
+					getAgent(serial).acquire();
+				}
 			}
 		}
 		return acquireAgents(serials);

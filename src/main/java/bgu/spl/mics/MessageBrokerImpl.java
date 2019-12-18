@@ -57,7 +57,7 @@ public class MessageBrokerImpl implements MessageBroker {
 	public <T> Future<T> sendEvent(Event<T> e) {
 		// TODO Auto-generated method stub
 		Subscriber sub=mapOfTopics.get(e.getClass()).poll();
-		Future future=new Future();
+		Future<T> future=new Future<T>();
 		try {
 			mapOfSubscribers.get(sub).put(e);
 			mapOfTopics.get(e.getClass()).put(sub);
