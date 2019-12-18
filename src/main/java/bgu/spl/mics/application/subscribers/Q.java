@@ -24,16 +24,16 @@ public class Q extends Subscriber {
 	protected void initialize() {
 		// TODO Implement this
 		MessageBrokerImpl.getInstance().register(this);
-		MessageBrokerImpl.getInstance().subscribeEvent(GadgetAvailableEvent.class,this);
 		Callback<GadgetAvailableEvent>gadgetCallback= c ->  {
 			if(Inventory.getInstance().getItem(c.getGadget())){
-				complete(c,"true");		//TODO CHECK if complete of broker or this
+				complete(c,true);		//TODO CHECK if complete of broker or this
 			}
 			else{
-				complete(c,"false");
+				complete(c,false);
 			}
 		};	//callBack
-			//TODO continue
+		subscribeEvent(GadgetAvailableEvent.class,gadgetCallback);	//add callback to the sub callbackMap
+		//TODO continue
 	}
 
 

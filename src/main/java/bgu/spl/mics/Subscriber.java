@@ -1,6 +1,7 @@
 package bgu.spl.mics;
 
 import bgu.spl.mics.application.AgentsAvailableEvent;
+import bgu.spl.mics.application.GadgetAvailableEvent;
 
 import java.util.HashMap;
 
@@ -80,6 +81,8 @@ public abstract class Subscriber extends RunnableSubPub {
      *                 queue.
      */
     protected final <B extends Broadcast> void subscribeBroadcast(Class<B> type, Callback<B> callback) {
+        callBackMap.put(type,callback);
+        MessageBrokerImpl.getInstance().subscribeBroadcast(type,this);
         //TODO: implement this.
     }
 
@@ -117,17 +120,20 @@ public abstract class Subscriber extends RunnableSubPub {
         while (!terminated) {
             try {
                 Message message = MessageBrokerImpl.getInstance().awaitMessage(this);
-                switch (message.getClass().toString()){
-                    case "class bgu.spl.mics.application.MissionReceivedEvent":
-                        System.out.println("TODO");
-                        break;
-                    case "class bgu.spl.mics.application.AgentsAvailableEvent":
-                        MessageBrokerImpl.getInstance().sendEvent((AgentsAvailableEvent)message);
-                        break;
-                    case "class bgu.spl.mics.application.GadgetAvailableEvent":
-                        System.out.println("TODO3");
-                        break;
-                }
+                callBackMap.get(message.getClass()).call(message);  //check this
+
+//                switch (message.getClass().toString()){
+//                    case "class bgu.spl.mics.application.MissionReceivedEvent":
+//                        System.out.println("TODO");
+//                        break;
+//                    case "class bgu.spl.mics.application.AgentsAvailableEvent":
+//                        MessageBrokerImpl.getInstance().sendEvent((AgentsAvailableEvent)message);
+//                        break;
+//                    case "class bgu.spl.mics.application.GadgetAvailableEvent":
+//                        Callback<GadgetAvailableEvent> callback=callBackMap.get(message.getClass());
+//                        callback.call((GadgetAvailableEvent) message);
+//                        break;
+//                }
 
             }
             catch (InterruptedException e){

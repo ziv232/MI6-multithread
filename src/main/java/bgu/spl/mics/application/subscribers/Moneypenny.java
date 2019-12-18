@@ -5,6 +5,9 @@ import bgu.spl.mics.Message;
 import bgu.spl.mics.MessageBrokerImpl;
 import bgu.spl.mics.Subscriber;
 import bgu.spl.mics.application.AgentsAvailableEvent;
+import bgu.spl.mics.application.passiveObjects.Squad;
+
+import java.util.ArrayList;
 
 /**
  * Only this type of Subscriber can access the squad.
@@ -24,11 +27,21 @@ public class Moneypenny extends Subscriber {
 	protected void initialize() {
 		// TODO Implement this
 		MessageBrokerImpl.getInstance().register(this);
-		MessageBrokerImpl.getInstance().subscribeEvent(AgentsAvailableEvent.class,this);
-		Callback<AgentsAvailableEvent> AgentsEvent= c -> {
-			
-		};
 
+		Callback<AgentsAvailableEvent> AgentsEventCallback= c -> {
+			ArrayList<String>AgentsForMission= (ArrayList<String>) c.getAgentsListForMission();
+			while(!Squad.GetInstance().getAgents(AgentsForMission)){
+				try{
+					wait();
+				}
+				catch (InterruptedException e){
+					Thread.currentThread().interrupt();
+				}
+			}
+			complete(c,true);	//TODO Hypoteticly i return true, but if we need to abort i need to return false
+		};	//callback
+
+		subscribeEvent(AgentsAvailableEvent.class,AgentsEventCallback);
 		//TODO continue
 		
 	}
