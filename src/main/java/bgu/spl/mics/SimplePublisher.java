@@ -24,7 +24,8 @@ public final class SimplePublisher {
      */
     public final <T> Future<T> sendEvent(Event<T> e) {
         //TODO: implement this.
-        return null; //TODO: delete this line :)
+
+        return MessageBrokerImpl.getInstance().sendEvent(e);
     }
 
     /**
@@ -35,5 +36,6 @@ public final class SimplePublisher {
      */
     public final void sendBroadcast(Broadcast b) {
         //TODO: implement this.
+        MessageBrokerImpl.getInstance().sendBroadcast(b);
     }
 }

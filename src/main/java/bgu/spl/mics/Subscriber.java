@@ -1,5 +1,9 @@
 package bgu.spl.mics;
 
+import bgu.spl.mics.application.AgentsAvailableEvent;
+
+import java.util.HashMap;
+
 /**
  * The Subscriber is an abstract class that any subscriber in the system
  * must extend. The abstract Subscriber class is responsible to get and
@@ -17,6 +21,7 @@ package bgu.spl.mics;
  */
 public abstract class Subscriber extends RunnableSubPub {
     private boolean terminated = false;
+    private HashMap<Class,Callback> callBackMap=new HashMap<>();
 
     /**
      * @param name the Subscriber name (used mainly for debugging purposes -
@@ -48,6 +53,9 @@ public abstract class Subscriber extends RunnableSubPub {
      *                 queue.
      */
     protected final <T, E extends Event<T>> void subscribeEvent(Class<E> type, Callback<E> callback) {
+        callBackMap.put(type,callback);
+        MessageBrokerImpl.getInstance().subscribeEvent(type,this);
+
         //TODO: implement this.
     }
 
@@ -87,6 +95,8 @@ public abstract class Subscriber extends RunnableSubPub {
      */
     protected final <T> void complete(Event<T> e, T result) {
         //TODO: implement this.
+        MessageBrokerImpl.getInstance().complete(e,result);
+        notifyAll();
     }
 
     /**
@@ -105,7 +115,24 @@ public abstract class Subscriber extends RunnableSubPub {
     public final void run() {
         initialize();
         while (!terminated) {
-            System.out.println("NOT IMPLEMENTED!!!"); //TODO: you should delete this line :)
+            try {
+                Message message = MessageBrokerImpl.getInstance().awaitMessage(this);
+                switch (message.getClass().toString()){
+                    case "class bgu.spl.mics.application.MissionReceivedEvent":
+                        System.out.println("TODO");
+                        break;
+                    case "class bgu.spl.mics.application.AgentsAvailableEvent":
+                        MessageBrokerImpl.getInstance().sendEvent((AgentsAvailableEvent)message);
+                        break;
+                    case "class bgu.spl.mics.application.GadgetAvailableEvent":
+                        System.out.println("TODO3");
+                        break;
+                }
+
+            }
+            catch (InterruptedException e){
+                Thread.currentThread().interrupt();
+            }
         }
     }
 

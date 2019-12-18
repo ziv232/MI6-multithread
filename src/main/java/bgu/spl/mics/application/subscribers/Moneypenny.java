@@ -1,5 +1,6 @@
 package bgu.spl.mics.application.subscribers;
 
+import bgu.spl.mics.Callback;
 import bgu.spl.mics.Message;
 import bgu.spl.mics.MessageBrokerImpl;
 import bgu.spl.mics.Subscriber;
@@ -24,14 +25,21 @@ public class Moneypenny extends Subscriber {
 		// TODO Implement this
 		MessageBrokerImpl.getInstance().register(this);
 		MessageBrokerImpl.getInstance().subscribeEvent(AgentsAvailableEvent.class,this);
-		try{
-			Message mess =MessageBrokerImpl.getInstance().awaitMessage(this);
-		}
-		catch (InterruptedException e){
-			Thread.currentThread().interrupt();
-		}
+		Callback<AgentsAvailableEvent> AgentsEvent= c -> {
+			
+		};
+
 		//TODO continue
 		
 	}
 
 }
+
+	//those should be in the run(); of subscriber callback
+//
+//		try{
+//				Message mess =MessageBrokerImpl.getInstance().awaitMessage(this);
+//				}
+//				catch (InterruptedException e){
+//				Thread.currentThread().interrupt();
+//				}

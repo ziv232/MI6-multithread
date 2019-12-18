@@ -1,5 +1,6 @@
 package bgu.spl.mics.application.subscribers;
 
+import bgu.spl.mics.Publisher;
 import bgu.spl.mics.Subscriber;
 
 /**
@@ -20,5 +21,4 @@ public class Intelligence extends Subscriber {
 	protected void initialize() {
 		// TODO Implement this
 	}
-
 }
