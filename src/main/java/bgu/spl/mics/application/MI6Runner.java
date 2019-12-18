@@ -7,7 +7,7 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 /** This is the Main class of the application. You should parse the input file,
  * create the different instances of the objects, and run the system.
@@ -50,10 +50,10 @@ public class MI6Runner {
 
 
             for (int i=0;i<obj.services.intelligence.length;i++){
-                LinkedList<MissionInfo> list = new LinkedList<MissionInfo>();
+                ArrayList<MissionInfo> list = new ArrayList<MissionInfo>();
                 Intelligence intel = new Intelligence(Integer.toString(i));
                 for(int j=0;j<obj.services.intelligence[i].missions.length;j++){
-                    LinkedList<String> agentslist = new LinkedList<String>();
+                    ArrayList<String> agentslist = new ArrayList<>();
                     for(int l=0;l<obj.services.intelligence[i].missions[j].serialAgentsNumbers.length;l++){
                         agentslist.add(obj.services.intelligence[i].missions[j].serialAgentsNumbers[l]);
                         //System.out.println(agentslist.get(l));

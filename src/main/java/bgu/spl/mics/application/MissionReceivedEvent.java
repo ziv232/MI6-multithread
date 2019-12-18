@@ -8,14 +8,20 @@ public class MissionReceivedEvent implements Event<Boolean> {
     String missionName;
     ArrayList<String> agentsSerialNumbers;
     String gadget;
+    int timeIssued;
+    int timeExpired;
+    int duration;
 
-    public MissionReceivedEvent(String missionName, ArrayList<String> agentsSerialNumbers, String gadget){
+    public MissionReceivedEvent(String missionName, ArrayList<String> agentsSerialNumbers, String gadget,int timeIssued, int timeExpired, int duration){
         this.missionName=missionName;
-        this.agentsSerialNumbers=new ArrayList<>();
+        this.agentsSerialNumbers= new ArrayList<String>();
         for(String serNum:agentsSerialNumbers){
             this.agentsSerialNumbers.add(serNum);
         }
         this.gadget=gadget;
+        this.timeIssued=timeIssued;
+        this.timeExpired=timeExpired;
+        this.duration=duration;
     }
 
     public String getGadget() {
@@ -24,5 +30,9 @@ public class MissionReceivedEvent implements Event<Boolean> {
 
     public ArrayList<String> getAgentsSerialNumbers() {
         return agentsSerialNumbers;
+    }
+
+    public int getTimeIssued(){
+        return timeIssued;
     }
 }

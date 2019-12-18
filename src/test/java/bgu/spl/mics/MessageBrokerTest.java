@@ -28,7 +28,7 @@ public class MessageBrokerTest {
     @BeforeEach
     public void setUp(){
     	broker=new MessageBrokerImpl();
-    	intel=new Intelligence();
+    	intel=new Intelligence("1");
     	money=new Moneypenny();
     	q=new Q();
     	m=new M();
