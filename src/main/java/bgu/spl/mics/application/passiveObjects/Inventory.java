@@ -36,7 +36,7 @@ public class Inventory {
      */
 	public void load (String[] inventory) {
 		for(int i=0;i<inventory.length;i++) {
-			this.gadgets.add(inventory[i]);
+			getInstance().getGadgets().add(inventory[i]);
 		}
 	}
 	

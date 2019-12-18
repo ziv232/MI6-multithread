@@ -9,6 +9,12 @@ import java.util.List;
  * You may add ONLY private fields and methods to this class.
  */
 public class MissionInfo {
+	private String missionName;
+	private List<String> serialAgentsNumbers;
+	private String gadget;
+	private int timeIssued;
+	private int timeExpired;
+	private int duration;
 
     /**
      * Sets the name of the mission.
