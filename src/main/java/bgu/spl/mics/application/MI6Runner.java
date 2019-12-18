@@ -1,14 +1,13 @@
 package bgu.spl.mics.application;
 
-import bgu.spl.mics.application.passiveObjects.Agent;
-import bgu.spl.mics.application.passiveObjects.GsonObj;
-import bgu.spl.mics.application.passiveObjects.Inventory;
-import bgu.spl.mics.application.passiveObjects.Squad;
+import bgu.spl.mics.application.passiveObjects.*;
+import bgu.spl.mics.application.subscribers.Intelligence;
 import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.LinkedList;
 
 /** This is the Main class of the application. You should parse the input file,
  * create the different instances of the objects, and run the system.
@@ -40,20 +39,32 @@ public class MI6Runner {
             }
             Squad.GetInstance().load(agents);
             for(int i=0;i<agents.length;i++){
-                System.out.println(agents[i].getName());
-                System.out.println(agents[i].getSerialNumber());
+               // System.out.println(agents[i].getName());
+                //System.out.println(agents[i].getSerialNumber());
             }
             String name = obj.services.intelligence[0].missions[0].missionName;
-            System.out.println(name);
+//            System.out.println(name);
+//            System.out.println(obj.services.M);
+//            System.out.println(obj.services.Moneypenny);
+//            System.out.println(obj.services.time);
 
 
-//            for (int i=0;i<obj.services.intelligence.length;i++){
-//                LinkedList<MissionInfo> list = new LinkedList<MissionInfo>();
-//                //Subscriber intel = new Intelligence(Integer.toString(i),new List<MissionInfo>missions);
-//
-//
-//
-//            }
+            for (int i=0;i<obj.services.intelligence.length;i++){
+                LinkedList<MissionInfo> list = new LinkedList<MissionInfo>();
+                Intelligence intel = new Intelligence(Integer.toString(i));
+                for(int j=0;j<obj.services.intelligence[i].missions.length;j++){
+                    LinkedList<String> agentslist = new LinkedList<String>();
+                    for(int l=0;l<obj.services.intelligence[i].missions[j].serialAgentsNumbers.length;l++){
+                        agentslist.add(obj.services.intelligence[i].missions[j].serialAgentsNumbers[l]);
+                        //System.out.println(agentslist.get(l));
+                    }
+                    list.add(new MissionInfo(obj.services.intelligence[i].missions[j].missionName,agentslist,obj.services.intelligence[i].missions[j].gadget,
+                            obj.services.intelligence[i].missions[j].timeIssued,obj.services.intelligence[i].missions[j].timeExpired,obj.services.intelligence[i].missions[j].duration));
+
+                }
+
+             intel.setMissions(list);
+            }
 
 
         } catch (IOException ignored) {
