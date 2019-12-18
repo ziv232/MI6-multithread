@@ -1,5 +1,6 @@
 package bgu.spl.mics.application.passiveObjects;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,14 +11,14 @@ import java.util.List;
  */
 public class MissionInfo {
 	private String missionName;
-	private List<String> serialAgentsNumbers;
+	private ArrayList<String> serialAgentsNumbers;
 	private String gadget;
 	private int timeIssued;
 	private int timeExpired;
 	private int duration;
 
 
-	public MissionInfo(String missionName, List<String> agents, String gadget, int timeIssued, int timeExpired, int duration){
+	public MissionInfo(String missionName, ArrayList<String> agents, String gadget, int timeIssued, int timeExpired, int duration){
 		this.missionName=missionName;
 		this.serialAgentsNumbers=agents;
 		this.gadget=gadget;

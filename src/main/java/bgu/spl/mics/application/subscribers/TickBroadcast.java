@@ -11,4 +11,8 @@ public class TickBroadcast implements Broadcast {
         this.tick.set(tick);
     }
 
+    public AtomicInteger getTick(){
+        return tick;
+    }
+
 }
