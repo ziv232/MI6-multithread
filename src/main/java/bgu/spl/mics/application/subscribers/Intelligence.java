@@ -1,6 +1,5 @@
-package bgu.spl.mics.application.publishers;
+package bgu.spl.mics.application.subscribers;
 
-import bgu.spl.mics.Publisher;
 import bgu.spl.mics.Subscriber;
 
 /**
@@ -10,7 +9,7 @@ import bgu.spl.mics.Subscriber;
  * You can add private fields and public methods to this class.
  * You MAY change constructor signatures and even add new public constructors.
  */
-public class Intelligence extends Publisher {
+public class Intelligence extends Subscriber {
 
 	public Intelligence() {
 		super("Change_This_Name");
@@ -19,11 +18,6 @@ public class Intelligence extends Publisher {
 
 	@Override
 	protected void initialize() {
-		// TODO Implement this
-	}
-
-	@Override
-	public void run() {
 		// TODO Implement this
 	}
 
