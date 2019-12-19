@@ -3,7 +3,7 @@ package bgu.spl.mics;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import bgu.spl.mics.application.publishers.Intelligence;
+import bgu.spl.mics.application.subscribers.Intelligence;
 import bgu.spl.mics.application.subscribers.M;
 import bgu.spl.mics.application.subscribers.Moneypenny;
 import bgu.spl.mics.application.subscribers.Q;
@@ -28,7 +28,7 @@ public class MessageBrokerTest {
     @BeforeEach
     public void setUp(){
     	broker=new MessageBrokerImpl();
-    	intel=new Intelligence();
+    	intel=new Intelligence("1");
     	money=new Moneypenny();
     	q=new Q();
     	m=new M();

@@ -1,6 +1,11 @@
 package bgu.spl.mics.application.subscribers;
 
+import bgu.spl.mics.Callback;
+import bgu.spl.mics.Message;
+import bgu.spl.mics.MessageBrokerImpl;
 import bgu.spl.mics.Subscriber;
+import bgu.spl.mics.application.GadgetAvailableEvent;
+import bgu.spl.mics.application.passiveObjects.Inventory;
 
 /**
  * Q is the only Subscriber\Publisher that has access to the {@link bgu.spl.mics.application.passiveObjects.Inventory}.
@@ -18,7 +23,18 @@ public class Q extends Subscriber {
 	@Override
 	protected void initialize() {
 		// TODO Implement this
-		
+		MessageBrokerImpl.getInstance().register(this);
+		Callback<GadgetAvailableEvent>gadgetCallback= c ->  {
+			if(Inventory.getInstance().getItem(c.getGadget())){
+				complete(c,true);		//TODO CHECK if complete of broker or this
+			}
+			else{
+				complete(c,false);
+			}
+		};	//callBack
+		subscribeEvent(GadgetAvailableEvent.class,gadgetCallback);	//add callback to the sub callbackMap
+		//TODO continue
 	}
+
 
 }

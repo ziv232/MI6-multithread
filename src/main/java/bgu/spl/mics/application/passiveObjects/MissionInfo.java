@@ -1,5 +1,6 @@
 package bgu.spl.mics.application.passiveObjects;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,6 +10,22 @@ import java.util.List;
  * You may add ONLY private fields and methods to this class.
  */
 public class MissionInfo {
+	private String missionName;
+	private ArrayList<String> serialAgentsNumbers;
+	private String gadget;
+	private int timeIssued;
+	private int timeExpired;
+	private int duration;
+
+
+	public MissionInfo(String missionName, ArrayList<String> agents, String gadget, int timeIssued, int timeExpired, int duration){
+		this.missionName=missionName;
+		this.serialAgentsNumbers=agents;
+		this.gadget=gadget;
+		this.timeIssued=timeIssued;
+		this.timeExpired=timeExpired;
+		this.duration=duration;
+	}
 
     /**
      * Sets the name of the mission.

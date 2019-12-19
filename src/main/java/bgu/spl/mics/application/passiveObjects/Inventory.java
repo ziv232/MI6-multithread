@@ -12,8 +12,10 @@ import java.util.List;
  * You can add ONLY private fields and methods to this class as you see fit.
  */
 public class Inventory {
+	private  static  class InventoryHolder{
+		private static Inventory instance = new Inventory();
+	}
 	private List<String> gadgets;
-	private static Inventory instance = null;
 	/**
      * Retrieves the single instance of this class.
      */
@@ -22,15 +24,7 @@ public class Inventory {
 		this.gadgets = new ArrayList<String>();
 	}
 	public static Inventory getInstance() {
-		if(instance == null) {
-			synchronized(Inventory.class) {
-				if(instance == null) {
-					instance = new Inventory();
-				}
-            }
-		}
-		return instance;
-		
+		return InventoryHolder.instance;
 	}
 
 	/**
@@ -42,7 +36,7 @@ public class Inventory {
      */
 	public void load (String[] inventory) {
 		for(int i=0;i<inventory.length;i++) {
-			this.gadgets.add(inventory[i]);
+			getInstance().getGadgets().add(inventory[i]);
 		}
 	}
 	
@@ -55,6 +49,7 @@ public class Inventory {
 	public boolean getItem(String gadget){
 		for(int i=0;i<this.gadgets.size();i++) {
 			if(gadget.equals(this.gadgets.get(i))) {
+				gadgets.remove(i);	//check, after we found the gadget we remove it from the list
 				return true;
 			}
 		}
@@ -78,3 +73,5 @@ public class Inventory {
 		return this.gadgets;
 	}
 }
+
+//TEST 1,2,1
