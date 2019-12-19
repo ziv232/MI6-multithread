@@ -15,8 +15,9 @@ import java.util.ArrayList;
  */
 public class M extends Subscriber {
 
-	public M() {
-		super("Change_This_Name");
+	public M(String name) {
+		super(name);
+		System.out.println("M "+getName()+" created");
 		// TODO Implement this
 	}
 

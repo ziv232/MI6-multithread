@@ -18,8 +18,9 @@ import java.util.ArrayList;
  */
 public class Moneypenny extends Subscriber {
 
-	public Moneypenny() {
-		super("Change_This_Name");
+	public Moneypenny(String name) {
+		super(name);
+		System.out.println("MoneyPenny "+getName()+" created");
 		// TODO Implement this
 	}
 

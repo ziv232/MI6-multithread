@@ -54,7 +54,7 @@ public abstract class Subscriber extends RunnableSubPub {
      *                 queue.
      */
     protected final <T, E extends Event<T>> void subscribeEvent(Class<E> type, Callback<E> callback) {
-        callBackMap.put(type,callback);
+        callBackMap.putIfAbsent(type,callback);
         MessageBrokerImpl.getInstance().subscribeEvent(type,this);
 
         //TODO: implement this.
@@ -81,7 +81,7 @@ public abstract class Subscriber extends RunnableSubPub {
      *                 queue.
      */
     protected final <B extends Broadcast> void subscribeBroadcast(Class<B> type, Callback<B> callback) {
-        callBackMap.put(type,callback);
+        callBackMap.putIfAbsent(type,callback);
         MessageBrokerImpl.getInstance().subscribeBroadcast(type,this);
         //TODO: implement this.
     }
@@ -120,8 +120,13 @@ public abstract class Subscriber extends RunnableSubPub {
         while (!terminated) {
             try {
                 Message message = MessageBrokerImpl.getInstance().awaitMessage(this);
-                callBackMap.get(message.getClass()).call(message);  //check this
+//                System.out.println("BOOOOOOOOOOOOOOOOOOOOOM");
 
+
+//                System.out.println(message.getClass().toString()+"    "+getClass()+ getName());
+
+
+                callBackMap.get(message.getClass()).call(message);  //check this
 //                switch (message.getClass().toString()){
 //                    case "class bgu.spl.mics.application.MissionReceivedEvent":
 //                        System.out.println("TODO");

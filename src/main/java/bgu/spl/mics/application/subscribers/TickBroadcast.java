@@ -5,13 +5,13 @@ import bgu.spl.mics.Broadcast;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class TickBroadcast implements Broadcast {
-    private AtomicInteger tick;
+    private int tick;
 
     public TickBroadcast(int tick){
-        this.tick.set(tick);
+        this.tick =tick;
     }
 
-    public AtomicInteger getTick(){
+    public int getTick(){
         return tick;
     }
 

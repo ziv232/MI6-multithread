@@ -20,36 +20,42 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Intelligence extends Subscriber {
 	private List<MissionInfo> missions;
 	private List<MissionReceivedEvent> eventList;
-	AtomicInteger currTick;
-	AtomicInteger nextMission;
+	int currTick;
+	int nextMissionTime;
 
 	public Intelligence(String name) {
 		super(name);
-		this.currTick.set(0);
+		this.currTick =0;
 		this.eventList = new ArrayList<MissionReceivedEvent>();
+		System.out.println("Intelligence "+getName()+" created");
 		// TODO Implement this
 	}
 
 	public Intelligence(String name ,List<MissionInfo> missions){
 		super(name);
-
 	}
 
 	@Override
 	protected void initialize() {
 		MessageBrokerImpl.getInstance().register(this);
 		for(int i=0;i<this.missions.size();i++){
-			eventList.add(new MissionReceivedEvent(missions.get(i).getMissionName(), (ArrayList<String>) missions.get(i).getSerialAgentsNumbers(),
-					missions.get(i).getGadget(),missions.get(i).getTimeIssued(), missions.get(i).getTimeExpired(),
-					missions.get(i).getDuration()));
+			eventList.add(new MissionReceivedEvent(missions.get(i).getMissionName(),
+					(ArrayList<String>) missions.get(i).getSerialAgentsNumbers(),missions.get(i).getGadget(),
+					missions.get(i).getTimeIssued(),missions.get(i).getTimeExpired(),missions.get(i).getDuration()));
 		}
 
-		Callback<TickBroadcast> tickCallBack = c -> {
+		Callback<TickBroadcast> tickCallBack = (TickBroadcast c) -> {
 			while(eventList.size()>0){
 				MissionReceivedEvent toSend = eventList.remove(0);	//dequeue first mission
-				nextMission.set(toSend.getTimeIssued());	//get the mission time to issued
+				System.out.println(toSend.getTimeIssued()+ "XXXXXXXXXXX");
+				nextMissionTime=(toSend.getTimeIssued());	//get the mission time to issued
 				try {
-					while (!((TickBroadcast) (MessageBrokerImpl.getInstance().awaitMessage(this))).getTick().equals(nextMission)) {
+					TickBroadcast msg=((TickBroadcast)MessageBrokerImpl.getInstance().awaitMessage(this));
+					currTick=msg.getTick();
+					while (currTick!=(nextMissionTime)) {
+						msg=(((TickBroadcast) (MessageBrokerImpl.getInstance().awaitMessage(this))));
+						currTick=msg.getTick();
+//						System.out.println(currTick);
 					}
 					MessageBrokerImpl.getInstance().sendEvent(toSend);	//TODO WE DID NOT TAKE THE FUTURE AND PASTED IT TO 'M'
 				}

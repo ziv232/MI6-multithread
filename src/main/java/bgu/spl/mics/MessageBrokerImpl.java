@@ -1,4 +1,9 @@
 package bgu.spl.mics;
+import bgu.spl.mics.application.AgentsAvailableEvent;
+import bgu.spl.mics.application.GadgetAvailableEvent;
+import bgu.spl.mics.application.MissionReceivedEvent;
+import bgu.spl.mics.application.subscribers.TickBroadcast;
+
 import java.util.concurrent.*;
 
 /**
@@ -14,6 +19,18 @@ public class MessageBrokerImpl implements MessageBroker {
 
 	private static class MessageBrokerHolder{
 		private static MessageBrokerImpl instance= new MessageBrokerImpl();
+	}
+	private MessageBrokerImpl(){
+		mapOfSubscribers=new ConcurrentHashMap<>();
+		mapOfTopics=new ConcurrentHashMap<>();
+		mapOfEvents=new ConcurrentHashMap<>();
+		//==========add every topic to map===========
+		mapOfTopics.putIfAbsent(AgentsAvailableEvent.class, new LinkedBlockingQueue<>());
+		mapOfTopics.putIfAbsent(GadgetAvailableEvent.class, new LinkedBlockingQueue<>());
+		mapOfTopics.putIfAbsent(MissionReceivedEvent.class, new LinkedBlockingQueue<>());
+		mapOfTopics.putIfAbsent(TickBroadcast.class, new LinkedBlockingQueue<>());
+
+
 	}
 
 	/**
@@ -49,7 +66,15 @@ public class MessageBrokerImpl implements MessageBroker {
 	@Override
 	public void sendBroadcast(Broadcast b) {
 		// TODO Auto-generated method stub
-
+		LinkedBlockingQueue<Subscriber> subsToSend=mapOfTopics.get(b.getClass());
+		for(Subscriber sub: subsToSend){
+			try {
+				mapOfSubscribers.get(sub).put(b);
+			}
+			catch (InterruptedException e){
+				Thread.currentThread().interrupt();
+			}
+		}
 	}
 
 	
@@ -100,7 +125,7 @@ public class MessageBrokerImpl implements MessageBroker {
 	@Override
 	public Message awaitMessage(Subscriber m) throws InterruptedException {
 		// TODO Auto-generated method stub
-		return mapOfSubscribers.get(m).poll();	//TODO we just removed the first message, but we did nothing
+		return mapOfSubscribers.get(m).take();	//TODO we just removed the first message, but we did nothing
 	}
 
 	

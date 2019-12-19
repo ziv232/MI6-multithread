@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * You MAY change constructor signatures and even add new public constructors.
  */
 public class TimeService extends Publisher {
-	private int step;
+	private final int step;
 	private int duration;
 	private AtomicInteger tick;
 	//private long startTime;
@@ -27,13 +27,13 @@ public class TimeService extends Publisher {
 		super("clock");
 		this.step = 100;
 		this.duration = duration;
-		this.tick.set(1);
+		this.tick = new AtomicInteger(0);
 		//this.startTime = 0;
+		System.out.println("TimeService "+getName()+" created");
 	}
 
 	@Override
 	protected void initialize() {
-		Thread thread = new Thread(this);
 		
 	}
 
@@ -45,7 +45,9 @@ public class TimeService extends Publisher {
 			catch (InterruptedException e){ throw new IllegalStateException(e.getMessage()); }
 			tick.incrementAndGet();
 
-			MessageBrokerImpl.getInstance().sendBroadcast((Broadcast) new TickBroadcast(tick.get()));
+			getSimplePublisher().sendBroadcast(new TickBroadcast(tick.get()));
+//			System.out.println("tick "+tick.get());
+
 
 			//int currentTick = (int)((System.currentTimeMillis()-startTime)/step);
 			//tick.compareAndSet(tick,currentTick);

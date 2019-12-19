@@ -15,8 +15,9 @@ import bgu.spl.mics.application.passiveObjects.Inventory;
  */
 public class Q extends Subscriber {
 
-	public Q() {
-		super("Change_This_Name");
+	public Q(String name) {
+		super(name);
+		System.out.println("Q "+getName()+" created");
 		// TODO Implement this
 	}
 

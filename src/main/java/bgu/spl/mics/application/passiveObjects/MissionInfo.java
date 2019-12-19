@@ -25,6 +25,7 @@ public class MissionInfo {
 		this.timeIssued=timeIssued;
 		this.timeExpired=timeExpired;
 		this.duration=duration;
+		System.out.println("Mission: "+ getMissionName()+ " created");
 	}
 
     /**
@@ -38,8 +39,7 @@ public class MissionInfo {
      * Retrieves the name of the mission.
      */
 	public String getMissionName() {
-		// TODO Implement this
-		return null;
+		return missionName;
 	}
 
     /**
@@ -53,8 +53,7 @@ public class MissionInfo {
      * Retrieves the serial agent number.
      */
 	public List<String> getSerialAgentsNumbers() {
-		// TODO Implement this
-		return null;
+		return this.serialAgentsNumbers;
 	}
 
     /**
@@ -68,8 +67,7 @@ public class MissionInfo {
      * Retrieves the gadget name.
      */
 	public String getGadget() {
-		// TODO Implement this
-		return null;
+		return this.gadget;
 	}
 
     /**
@@ -83,8 +81,7 @@ public class MissionInfo {
      * Retrieves the time the mission was issued in milliseconds.
      */
 	public int getTimeIssued() {
-		// TODO Implement this
-		return 0;
+		return this.timeIssued;
 	}
 
     /**
@@ -98,8 +95,7 @@ public class MissionInfo {
      * Retrieves the time that if it that time passed the mission should be aborted.
      */
 	public int getTimeExpired() {
-		// TODO Implement this
-		return 0;
+		return this.timeExpired;
 	}
 
     /**
@@ -113,7 +109,6 @@ public class MissionInfo {
 	 * Retrieves the duration of the mission in time-ticks.
 	 */
 	public int getDuration() {
-		// TODO Implement this
-		return 0;
+		return this.duration;
 	}
 }
