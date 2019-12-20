@@ -31,6 +31,8 @@ public class Q extends Subscriber {
 		// TODO Implement this
 		MessageBrokerImpl.getInstance().register(this);
 		Callback<GadgetAvailableEvent>gadgetCallback= c ->  {
+			c.setTime(getCurrTick());	//update when Q receive the event
+
 			if(Inventory.getInstance().getItem(c.getGadget())){
 				complete(c,true);		//TODO CHECK if complete of broker or this
 			}
@@ -38,6 +40,7 @@ public class Q extends Subscriber {
 				complete(c,false);
 			}
 		};	//callBack
+
 		subscribeEvent(GadgetAvailableEvent.class,gadgetCallback);	//add callback to the sub callbackMap
 		//TODO continue
 
@@ -45,7 +48,7 @@ public class Q extends Subscriber {
 //			try {
 //				TickBroadcast tick = ((TickBroadcast) MessageBrokerImpl.getInstance().awaitMessage(this));
 				currTick=c.getTick();
-				System.out.println("Q tickTime "+getCurrTick()+ "on Q tickCallback ");
+//				System.out.println("Q tickTime "+getCurrTick()+ "on Q tickCallback ");
 //			}
 //			catch (InterruptedException e){
 //				Thread.currentThread().interrupt();

@@ -1,5 +1,6 @@
 package bgu.spl.mics.application.passiveObjects;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,12 +10,22 @@ import java.util.List;
  * You may add ONLY private fields and methods to this class.
  */
 public class Report {
+	private String missionName;
+	private int MNumber;
+	private int MoneyPennyNumber;
+	private List<String> agentsSerialNumbers=new ArrayList<>();
+	private List<String> agentsNames=new ArrayList<>();
+	private String gadgetName;
+	private int timeIssued;
+	private int Qtime;
+	private int timeCreated;	//TODO
+
 	/**
      * Retrieves the mission name.
      */
 	public String getMissionName() {
 		// TODO Implement this
-		return null;
+		return missionName;
 	}
 
 	/**
@@ -22,6 +33,7 @@ public class Report {
 	 */
 	public void setMissionName(String missionName) {
 		// TODO Implement this
+		this.missionName=missionName;
 	}
 
 	/**
@@ -29,7 +41,7 @@ public class Report {
 	 */
 	public int getM() {
 		// TODO Implement this
-		return 0;
+		return MNumber;
 	}
 
 	/**
@@ -37,6 +49,7 @@ public class Report {
 	 */
 	public void setM(int m) {
 		// TODO Implement this
+		MNumber=m;
 	}
 
 	/**
@@ -44,7 +57,7 @@ public class Report {
 	 */
 	public int getMoneypenny() {
 		// TODO Implement this
-		return 0;
+		return MoneyPennyNumber;
 	}
 
 	/**
@@ -52,6 +65,7 @@ public class Report {
 	 */
 	public void setMoneypenny(int moneypenny) {
 		// TODO Implement this
+		MoneyPennyNumber=moneypenny;
 	}
 
 	/**
@@ -61,7 +75,7 @@ public class Report {
 	 */
 	public List<String> getAgentsSerialNumbersNumber() {
 		// TODO Implement this
-		return null;
+		return agentsSerialNumbers;
 	}
 
 	/**
@@ -69,6 +83,7 @@ public class Report {
 	 */
 	public void setAgentsSerialNumbersNumber(List<String> agentsSerialNumbersNumber) {
 		// TODO Implement this
+		this.agentsSerialNumbers.addAll(agentsSerialNumbersNumber);
 	}
 
 	/**
@@ -78,7 +93,7 @@ public class Report {
 	 */
 	public List<String> getAgentsNames() {
 		// TODO Implement this
-		return null;
+		return agentsNames;
 	}
 
 	/**
@@ -86,6 +101,7 @@ public class Report {
 	 */
 	public void setAgentsNames(List<String> agentsNames) {
 		// TODO Implement this
+		this.agentsNames.addAll(agentsNames);
 	}
 
 	/**
@@ -95,7 +111,7 @@ public class Report {
 	 */
 	public String getGadgetName() {
 		// TODO Implement this
-		return null;
+		return gadgetName;
 	}
 
 	/**
@@ -103,6 +119,7 @@ public class Report {
 	 */
 	public void setGadgetName(String gadgetName) {
 		// TODO Implement this
+		this.gadgetName=gadgetName;
 	}
 
 	/**
@@ -110,7 +127,7 @@ public class Report {
 	 */
 	public int getQTime() {
 		// TODO Implement this
-		return 0;
+		return Qtime;
 	}
 
 	/**
@@ -118,6 +135,7 @@ public class Report {
 	 */
 	public void setQTime(int qTime) {
 		// TODO Implement this
+		Qtime=qTime;
 	}
 
 	/**
@@ -125,7 +143,7 @@ public class Report {
 	 */
 	public int getTimeIssued() {
 		// TODO Implement this
-		return 0;
+		return timeIssued;
 	}
 
 	/**
@@ -133,6 +151,7 @@ public class Report {
 	 */
 	public void setTimeIssued(int timeIssued) {
 		// TODO Implement this
+		this.timeIssued=timeIssued;
 	}
 
 	/**
@@ -140,7 +159,7 @@ public class Report {
 	 */
 	public int getTimeCreated() {
 		// TODO Implement this
-		return 0;
+		return timeCreated;
 	}
 
 	/**
@@ -148,5 +167,6 @@ public class Report {
 	 */
 	public void setTimeCreated(int timeCreated) {
 		// TODO Implement this
+		this.timeCreated=timeCreated;
 	}
 }

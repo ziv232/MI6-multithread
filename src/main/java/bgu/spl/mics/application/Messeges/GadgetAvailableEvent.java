@@ -12,6 +12,10 @@ public class GadgetAvailableEvent implements Event<Boolean> {
 
     public String getGadget(){return this.gadget;}
 
+    public void setTime(int Q_time){time=Q_time;}
+
+    public int getTime(){return time;}
+
 
     public void sendGadgetAvailableEvent(){
         MessageBrokerImpl.getInstance().sendEvent(this);

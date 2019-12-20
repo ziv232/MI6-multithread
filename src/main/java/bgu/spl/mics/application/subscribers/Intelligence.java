@@ -47,12 +47,13 @@ public class Intelligence extends Subscriber {
 		Callback<TickBroadcast> tickCallBack = (TickBroadcast c) -> {
 			if(eventList.size()>0){
 				MissionReceivedEvent toSend = eventList.get(0);	//take first mission without remove
-				System.out.println("tick time "+toSend.getTimeIssued()+ " of intelligence tickCallback");
 				nextMissionTime=(toSend.getTimeIssued());	//get the mission time to issued
 //				try {
 //					TickBroadcast msg=((TickBroadcast)MessageBrokerImpl.getInstance().awaitMessage(this));
 					currTick=c.getTick();
-					if (currTick==(nextMissionTime)) {
+//				System.out.println("tick time "+currTick+ " of intelligence tickCallback");
+
+				if (currTick==(nextMissionTime)) {
 //						msg=(((TickBroadcast) (MessageBrokerImpl.getInstance().awaitMessage(this))));
 //						currTick=msg.getTick();
 //						System.out.println(currTick);

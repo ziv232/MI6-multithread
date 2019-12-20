@@ -67,7 +67,7 @@ public class Diary {
 		return total;
 	}
 
-	private void incrementTotal(){
+	public synchronized void incrementTotal(){
 		int totalBefore = this.total;
 		this.total = totalBefore+1;
 	}

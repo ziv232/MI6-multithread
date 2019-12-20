@@ -1,8 +1,5 @@
 package bgu.spl.mics;
-import bgu.spl.mics.application.Messeges.AgentsAvailableEvent;
-import bgu.spl.mics.application.Messeges.GadgetAvailableEvent;
-import bgu.spl.mics.application.Messeges.MissionReceivedEvent;
-import bgu.spl.mics.application.Messeges.TickBroadcast;
+import bgu.spl.mics.application.Messeges.*;
 
 import java.util.concurrent.*;
 
@@ -29,6 +26,9 @@ public class MessageBrokerImpl implements MessageBroker {
 		mapOfTopics.putIfAbsent(GadgetAvailableEvent.class, new LinkedBlockingQueue<>());
 		mapOfTopics.putIfAbsent(MissionReceivedEvent.class, new LinkedBlockingQueue<>());
 		mapOfTopics.putIfAbsent(TickBroadcast.class, new LinkedBlockingQueue<>());
+		mapOfTopics.putIfAbsent(AbortMissionEvent.class,new LinkedBlockingQueue<>());
+		mapOfTopics.putIfAbsent(SendAgentsEvent.class,new LinkedBlockingQueue<>());
+
 
 
 	}
@@ -82,12 +82,12 @@ public class MessageBrokerImpl implements MessageBroker {
 	public <T> Future<T> sendEvent(Event<T> e) {
 		// TODO Auto-generated method stub
 //		System.out.println(mapOfTopics.get(e.getClass()).size()+ " size of topic Q"+ e.getClass()+ "in broker sendEvent");
-		Subscriber sub=mapOfTopics.get(e.getClass()).poll();	//we remove sub of the topic Queue
 		Future<T> future=new Future<T>();
 		try {
-			mapOfSubscribers.get(sub).put(e);	//add e to sub message Queue
-			mapOfTopics.get(e.getClass()).put(sub);	//round-Robin
-			mapOfEvents.put(e,future);	//add future to the mapOfEvents
+			Subscriber sub = mapOfTopics.get(e.getClass()).take();    //we remove sub of the topic Queue
+			mapOfSubscribers.get(sub).put(e);    //add e to sub message Queue
+			mapOfTopics.get(e.getClass()).put(sub);    //round-Robin
+			mapOfEvents.put(e, future);    //add future to the mapOfEvents
 		}
 		catch (InterruptedException exp){
 			Thread.currentThread().interrupt();

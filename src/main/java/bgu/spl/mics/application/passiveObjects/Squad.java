@@ -53,25 +53,34 @@ public class Squad {
 	 * Releases agents.
 	 */
 	public void releaseAgents(List<String> serials){	//TODO check what happens when we release while other try to acquire and if needed to notifyall after
-		for(String serial: serials) {
-			if(!agents.containsKey(serial)) {	//for each agent, if is in the squad- release.
-				System.out.println(serial+" is not existed");
-				return;
-			}
-		}
+//		for(String serial: serials) {
+//			if(!agents.containsKey(serial)) {	//for each agent, if is in the squad- release.
+//				System.out.println(serial+" is not existed");
+//				return;
+//			}
+//		}
 		for(String serial: serials) {	//for each agent, if is in the squad- release.
 			agents.get(serial).release();
 		}
 		// TODO Implement this
-		notifyAll();	//released all the agents, now threads can look for them
+//		notifyAll();	//released all the agents, now threads can look for them
 	}
 
 	/**
 	 * simulates executing a mission by calling sleep.
 	 * @param time   milliseconds to sleep
 	 */
-	public void sendAgents(List<String> serials, int time){
-		// TODO Implement this
+	public void sendAgents(List<String> serials, int time)  {
+		try {
+			Thread.sleep(time);
+			System.out.println("Squad, func sendAgents, Thread finished sleeping");
+
+			releaseAgents(serials);
+		}
+		catch (InterruptedException e){
+			Thread.currentThread().interrupt();
+		}
+
 	}
 
 	/**

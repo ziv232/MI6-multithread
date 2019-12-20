@@ -24,6 +24,8 @@ public class MissionReceivedEvent implements Event<Boolean> {
         this.duration=duration;
     }
 
+    public String getMissionName(){ return missionName;}
+
     public String getGadget() {
         return gadget;
     }
@@ -35,4 +37,8 @@ public class MissionReceivedEvent implements Event<Boolean> {
     public int getTimeIssued(){
         return timeIssued;
     }
+
+    public int getTimeExpired(){ return timeExpired;}
+
+    public int getDuration(){return duration;}
 }
