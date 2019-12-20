@@ -94,12 +94,12 @@ public class Squad {
 		while (!done) {
 			for (int i = 0; i < serials.size(); i++) {
 				if (!getAgent(serials.get(i)).isAvailable()) {    //if agent is unavailable- we check the loop from the start
-					try {
-						wait();
+//					try {
+//						wait();		//TODO TODO TODO WAIT!!!!!
 						i = -1;
-					} catch (InterruptedException e) {
-						Thread.currentThread().interrupt();
-					}
+//					} catch (InterruptedException e) {
+//						Thread.currentThread().interrupt();
+//					}
 				}
 			}
 
