@@ -1,8 +1,6 @@
 package bgu.spl.mics.application.publishers;
-import bgu.spl.mics.Broadcast;
-import bgu.spl.mics.MessageBrokerImpl;
 import bgu.spl.mics.Publisher;
-import bgu.spl.mics.application.subscribers.TickBroadcast;
+import bgu.spl.mics.application.Messeges.TickBroadcast;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -29,7 +27,7 @@ public class TimeService extends Publisher {
 		this.duration = duration;
 		this.tick = new AtomicInteger(0);
 		//this.startTime = 0;
-		System.out.println("TimeService "+getName()+" created");
+		System.out.println("TimeService "+getName()+" created on class TimeService");
 	}
 
 	@Override

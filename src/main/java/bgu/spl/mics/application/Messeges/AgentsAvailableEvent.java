@@ -1,4 +1,4 @@
-package bgu.spl.mics.application;
+package bgu.spl.mics.application.Messeges;
 
 import bgu.spl.mics.Event;
 import bgu.spl.mics.MessageBrokerImpl;
@@ -15,7 +15,7 @@ public class AgentsAvailableEvent implements Event<Boolean> {
             agentsForMission.add(agent);
         }
     }
-    public List<String>getAgentsListForMission(){return agentsForMission;}
+    public synchronized List<String>getAgentsListForMission(){return agentsForMission;}
     public void sendAgentsAvailableEvent(){ //TODO CHECK
         MessageBrokerImpl.getInstance().sendEvent(this);
     }

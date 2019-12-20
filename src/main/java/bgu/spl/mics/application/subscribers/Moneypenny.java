@@ -1,10 +1,9 @@
 package bgu.spl.mics.application.subscribers;
 
 import bgu.spl.mics.Callback;
-import bgu.spl.mics.Message;
 import bgu.spl.mics.MessageBrokerImpl;
 import bgu.spl.mics.Subscriber;
-import bgu.spl.mics.application.AgentsAvailableEvent;
+import bgu.spl.mics.application.Messeges.AgentsAvailableEvent;
 import bgu.spl.mics.application.passiveObjects.Squad;
 
 import java.util.ArrayList;
@@ -20,7 +19,7 @@ public class Moneypenny extends Subscriber {
 
 	public Moneypenny(String name) {
 		super(name);
-		System.out.println("MoneyPenny "+getName()+" created");
+		System.out.println("MoneyPenny "+getName()+" created on MoneyPenny class");
 		// TODO Implement this
 	}
 
@@ -30,6 +29,7 @@ public class Moneypenny extends Subscriber {
 		MessageBrokerImpl.getInstance().register(this);
 
 		Callback<AgentsAvailableEvent> AgentsEventCallback= c -> {
+			System.out.println("MoneyPenny "+getName()+ " received an event  on MoneyPenny Callback");
 			ArrayList<String>AgentsForMission= (ArrayList<String>) c.getAgentsListForMission();
 //			while(!Squad.GetInstance().getAgents(AgentsForMission)){
 //				try{

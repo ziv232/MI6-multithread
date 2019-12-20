@@ -1,9 +1,9 @@
 package bgu.spl.mics.application.subscribers;
 
 import bgu.spl.mics.*;
-import bgu.spl.mics.application.AgentsAvailableEvent;
-import bgu.spl.mics.application.GadgetAvailableEvent;
-import bgu.spl.mics.application.MissionReceivedEvent;
+import bgu.spl.mics.application.Messeges.AgentsAvailableEvent;
+import bgu.spl.mics.application.Messeges.GadgetAvailableEvent;
+import bgu.spl.mics.application.Messeges.MissionReceivedEvent;
 
 import java.util.ArrayList;
 
@@ -15,9 +15,10 @@ import java.util.ArrayList;
  */
 public class M extends Subscriber {
 
+
 	public M(String name) {
 		super(name);
-		System.out.println("M "+getName()+" created");
+		System.out.println("M "+getName()+" created on M class");
 		// TODO Implement this
 	}
 
@@ -30,13 +31,24 @@ public class M extends Subscriber {
 		Callback<MissionReceivedEvent> missionReceivedCallback=c -> {
 			//TODO add to the diary
 			AgentsAvailableEvent agentsEvent=new AgentsAvailableEvent(c.getAgentsSerialNumbers());
+
+			ArrayList<String> agentsList= (ArrayList<String>) agentsEvent.getAgentsListForMission();
+			for(String agent:agentsList){
+				System.out.print("M call back, agents for mission "+ agent+ "  ");
+			}
+
 			Future<Boolean> agentsFut= MessageBrokerImpl.getInstance().sendEvent(agentsEvent);
 			boolean agentsAvailable=agentsFut.get();
+			System.out.println();
+			System.out.println("M "+getName()+" got the future answer on M callback");
 
 			if(agentsAvailable){	//we acquired the agents
+//				System.out.println(true+"XXXXXXXXXXXXXXXXXXXXXXXXXXX");
 				GadgetAvailableEvent gadgetEvent=new GadgetAvailableEvent(c.getGadget());
 				Future<Boolean> gadgetFut=MessageBrokerImpl.getInstance().sendEvent(gadgetEvent);
 				boolean gadgetAvailable=gadgetFut.get();
+
+				System.out.println(gadgetAvailable +"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ on M callBack");
 
 				if(gadgetAvailable){	//we got the gadget- lets do the mission!
 					complete(c,true);

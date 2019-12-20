@@ -3,12 +3,12 @@ package bgu.spl.mics.application.subscribers;
 import bgu.spl.mics.Callback;
 import bgu.spl.mics.MessageBrokerImpl;
 import bgu.spl.mics.Subscriber;
-import bgu.spl.mics.application.MissionReceivedEvent;
+import bgu.spl.mics.application.Messeges.TickBroadcast;
+import bgu.spl.mics.application.Messeges.MissionReceivedEvent;
 import bgu.spl.mics.application.passiveObjects.MissionInfo;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * A Publisher only.
@@ -27,7 +27,7 @@ public class Intelligence extends Subscriber {
 		super(name);
 		this.currTick =0;
 		this.eventList = new ArrayList<MissionReceivedEvent>();
-		System.out.println("Intelligence "+getName()+" created");
+		System.out.println("Intelligence "+getName()+" created on intelligence class");
 		// TODO Implement this
 	}
 
@@ -45,24 +45,28 @@ public class Intelligence extends Subscriber {
 		}
 
 		Callback<TickBroadcast> tickCallBack = (TickBroadcast c) -> {
-			while(eventList.size()>0){
-				MissionReceivedEvent toSend = eventList.remove(0);	//dequeue first mission
-				System.out.println(toSend.getTimeIssued()+ "XXXXXXXXXXX");
+			if(eventList.size()>0){
+				MissionReceivedEvent toSend = eventList.get(0);	//take first mission without remove
+				System.out.println("tick time "+toSend.getTimeIssued()+ " of intelligence tickCallback");
 				nextMissionTime=(toSend.getTimeIssued());	//get the mission time to issued
-				try {
-					TickBroadcast msg=((TickBroadcast)MessageBrokerImpl.getInstance().awaitMessage(this));
-					currTick=msg.getTick();
-					while (currTick!=(nextMissionTime)) {
-						msg=(((TickBroadcast) (MessageBrokerImpl.getInstance().awaitMessage(this))));
-						currTick=msg.getTick();
+//				try {
+//					TickBroadcast msg=((TickBroadcast)MessageBrokerImpl.getInstance().awaitMessage(this));
+					currTick=c.getTick();
+					if (currTick==(nextMissionTime)) {
+//						msg=(((TickBroadcast) (MessageBrokerImpl.getInstance().awaitMessage(this))));
+//						currTick=msg.getTick();
 //						System.out.println(currTick);
+						eventList.remove(0);
+						MessageBrokerImpl.getInstance().sendEvent(toSend);	//TODO WE DID NOT TAKE THE FUTURE AND PASTED IT TO 'M'
 					}
-					MessageBrokerImpl.getInstance().sendEvent(toSend);	//TODO WE DID NOT TAKE THE FUTURE AND PASTED IT TO 'M'
-				}
-				catch (InterruptedException e){
-					Thread.currentThread().interrupt();
-				}
+//				}
+//				catch (InterruptedException e){
+//					Thread.currentThread().interrupt();
+//				}
 			}
+//			else {	TODO TERMINATE
+//				terminate();
+//			}
 		};
 
 		subscribeBroadcast(TickBroadcast.class,tickCallBack);

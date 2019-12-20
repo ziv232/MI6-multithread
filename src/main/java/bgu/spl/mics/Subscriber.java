@@ -1,8 +1,5 @@
 package bgu.spl.mics;
 
-import bgu.spl.mics.application.AgentsAvailableEvent;
-import bgu.spl.mics.application.GadgetAvailableEvent;
-
 import java.util.HashMap;
 
 /**
@@ -23,6 +20,7 @@ import java.util.HashMap;
 public abstract class Subscriber extends RunnableSubPub {
     private boolean terminated = false;
     private HashMap<Class,Callback> callBackMap=new HashMap<>();
+    private MessageBroker ms;
 
     /**
      * @param name the Subscriber name (used mainly for debugging purposes -
@@ -30,6 +28,7 @@ public abstract class Subscriber extends RunnableSubPub {
      */
     public Subscriber(String name) {
         super(name);
+        ms=MessageBrokerImpl.getInstance();
     }
 
     /**
@@ -55,7 +54,7 @@ public abstract class Subscriber extends RunnableSubPub {
      */
     protected final <T, E extends Event<T>> void subscribeEvent(Class<E> type, Callback<E> callback) {
         callBackMap.putIfAbsent(type,callback);
-        MessageBrokerImpl.getInstance().subscribeEvent(type,this);
+        ms.subscribeEvent(type,this);
 
         //TODO: implement this.
     }
@@ -81,8 +80,8 @@ public abstract class Subscriber extends RunnableSubPub {
      *                 queue.
      */
     protected final <B extends Broadcast> void subscribeBroadcast(Class<B> type, Callback<B> callback) {
-        callBackMap.putIfAbsent(type,callback);
-        MessageBrokerImpl.getInstance().subscribeBroadcast(type,this);
+        callBackMap.put(type,callback);
+        ms.subscribeBroadcast(type,this);
         //TODO: implement this.
     }
 
@@ -98,8 +97,8 @@ public abstract class Subscriber extends RunnableSubPub {
      */
     protected final <T> void complete(Event<T> e, T result) {
         //TODO: implement this.
-        MessageBrokerImpl.getInstance().complete(e,result);
-        notifyAll();
+        ms.complete(e,result);
+//        notifyAll();
     }
 
     /**
@@ -119,7 +118,7 @@ public abstract class Subscriber extends RunnableSubPub {
         initialize();
         while (!terminated) {
             try {
-                Message message = MessageBrokerImpl.getInstance().awaitMessage(this);
+                Message message = ms.awaitMessage(this);
 //                System.out.println("BOOOOOOOOOOOOOOOOOOOOOM");
 
 
@@ -128,13 +127,13 @@ public abstract class Subscriber extends RunnableSubPub {
 
                 callBackMap.get(message.getClass()).call(message);  //check this
 //                switch (message.getClass().toString()){
-//                    case "class bgu.spl.mics.application.MissionReceivedEvent":
+//                    case "class bgu.spl.mics.application.Messeges.MissionReceivedEvent":
 //                        System.out.println("TODO");
 //                        break;
-//                    case "class bgu.spl.mics.application.AgentsAvailableEvent":
+//                    case "class bgu.spl.mics.application.Messeges.AgentsAvailableEvent":
 //                        MessageBrokerImpl.getInstance().sendEvent((AgentsAvailableEvent)message);
 //                        break;
-//                    case "class bgu.spl.mics.application.GadgetAvailableEvent":
+//                    case "class bgu.spl.mics.application.Messeges.GadgetAvailableEvent":
 //                        Callback<GadgetAvailableEvent> callback=callBackMap.get(message.getClass());
 //                        callback.call((GadgetAvailableEvent) message);
 //                        break;

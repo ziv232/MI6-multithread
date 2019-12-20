@@ -22,9 +22,9 @@ public class MI6Runner {
     public static void main(String[] args){
         try {
             //Gson obj = new Gson();
-            System.out.println("First Line");
+            System.out.println("First Line of main");
             String str = new String(Files.readAllBytes(Paths.get("src/main/java/bgu/spl/mics/application/Gson1json")));
-            System.out.println("2nd Line");
+            System.out.println("2nd Line of main");
 
             GsonObj obj = new Gson().fromJson(str, GsonObj.class);
 
@@ -80,6 +80,8 @@ public class MI6Runner {
                         agentslist.add(obj.services.intelligence[i].missions[j].serialAgentsNumbers[l]);
                         //System.out.println(agentslist.get(l));
                     }
+                    System.out.println();
+                    System.out.println("Parse between every mission created on class MI6");
                     list.add(new MissionInfo(obj.services.intelligence[i].missions[j].missionName,
                             agentslist,obj.services.intelligence[i].missions[j].gadget,
                             obj.services.intelligence[i].missions[j].timeIssued,obj.services.intelligence[i].missions[j].timeExpired,
@@ -89,7 +91,7 @@ public class MI6Runner {
                 intel.setMissions(list);// Set the list of missions we created to the intelligence.
                 ourBuddies.add(intel);
             }
-            System.out.println("fuckkkkkkkkkkkkkkkkkkkkkkkkkk 2.0");
+//            System.out.println("fuckkkkkkkkkkkkkkkkkkkkkkkkkk 2.0");
             Q q = new Q("1");
             ourBuddies.add(q);
             TimeService ts = new TimeService(obj.services.time);

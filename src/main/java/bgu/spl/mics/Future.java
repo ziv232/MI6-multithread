@@ -12,14 +12,16 @@ import java.util.concurrent.TimeUnit;
  */
 public class Future<T> {
 	
-	private boolean isdone=false;
-	private T answer=null;
+	private boolean isdone;
+	private T answer;
 	
 	/**
 	 * This should be the the only public constructor in this class.
 	 */
 	public Future() {
 		//TODO: implement this
+		isdone=false;
+		answer=null;
 	}
 	
 	/**
@@ -30,7 +32,7 @@ public class Future<T> {
      * @return return the result of type T if it is available, if not wait until it is available.
      * 	       
      */
-	public T get() {
+	public synchronized T get() {
 		//TODO: implement this.
 		while(!isDone()) {
 			try{
@@ -38,6 +40,7 @@ public class Future<T> {
 			}
 			catch (InterruptedException e){
 				Thread.currentThread().interrupt();
+				System.out.println("future interrupted");
 			}
 		}
 		return answer;

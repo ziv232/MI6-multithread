@@ -79,7 +79,7 @@ public class Squad {
 	 * @param serials   the serial numbers of the agents
 	 * @return ‘false’ if an agent of serialNumber ‘serial’ is missing, and ‘true’ otherwise
 	 */
-	public boolean getAgents(List<String> serials) {
+	public synchronized boolean getAgents(List<String> serials) {
 		// TODO Implement this
 		boolean done=false;
 		while (!done) {

@@ -25,7 +25,7 @@ public class MissionInfo {
 		this.timeIssued=timeIssued;
 		this.timeExpired=timeExpired;
 		this.duration=duration;
-		System.out.println("Mission: "+ getMissionName()+ " created");
+		System.out.println("Mission: "+ getMissionName()+ " created on mission info class");
 	}
 
     /**
