@@ -6,7 +6,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class TickBroadcast implements Broadcast {
     private int tick;
- 
+
     public TickBroadcast(int tick){
         this.tick =tick;
     }
