@@ -1,5 +1,9 @@
 package bgu.spl.mics.application.passiveObjects;
 
+import com.google.gson.Gson;
+
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,8 +67,16 @@ public class Inventory {
 	 * list of all the of the gadgeds.
 	 * This method is called by the main method in order to generate the output.
 	 */
-	public void printToFile(String filename){
-		//TODO: Implement this
+	public void printToFile(String filename) throws IOException {
+		try {
+			FileWriter writer = new FileWriter(filename);
+			Gson gson = new Gson().newBuilder().create();
+			gson.toJson(gadgets, writer);
+			writer.flush();
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	/**
 	 * Getter

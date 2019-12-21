@@ -130,6 +130,7 @@ public class M extends Subscriber {
 //				System.out.println("M tickTime "+getCurrTick()+ "on M tickCallback ");
 
 			if(c.isTerminated()){
+//				Diary.getInstance().printToFile("/users/studs/bsc/2020/zivshir/IdeaProjects/assignment2/src/main/java/bgu/spl/mics/application/DiaryOutPut.json");
 				System.out.println("M is going to terminate");
 				terminate();}
 		};
