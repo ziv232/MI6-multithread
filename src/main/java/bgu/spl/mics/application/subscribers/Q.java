@@ -29,7 +29,7 @@ public class Q extends Subscriber {
 	@Override
 	protected void initialize() {
 		// TODO Implement this
-		MessageBrokerImpl.getInstance().register(this);
+//		MessageBrokerImpl.getInstance().register(this);
 		Callback<GadgetAvailableEvent>gadgetCallback= c ->  {
 			c.setTime(getCurrTick());	//update when Q receive the event
 

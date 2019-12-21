@@ -31,7 +31,7 @@ public class Moneypenny extends Subscriber {
 	@Override
 	protected void initialize() {
 		// TODO Implement this
-		MessageBrokerImpl.getInstance().register(this);
+//		MessageBrokerImpl.getInstance().register(this);
 
 		Callback<AgentsAvailableEvent> AgentsEventCallback= c -> {
 			System.out.println("MoneyPenny "+getName()+ " received an event  on MoneyPenny Callback");

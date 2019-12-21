@@ -25,17 +25,16 @@ public class MessageBrokerImpl implements MessageBroker {
 		mapOfTopics=new ConcurrentHashMap<>();
 		mapOfEvents=new ConcurrentHashMap<>();
 		//==========add every topic to map===========
-		mapOfTopics.putIfAbsent(AgentsAvailableEvent.class, new LinkedBlockingQueue<>());
-		mapOfTopics.putIfAbsent(GadgetAvailableEvent.class, new LinkedBlockingQueue<>());
-		mapOfTopics.putIfAbsent(MissionReceivedEvent.class, new LinkedBlockingQueue<>());
+//		mapOfTopics.putIfAbsent(AgentsAvailableEvent.class, new LinkedBlockingQueue<>());
+//		mapOfTopics.putIfAbsent(GadgetAvailableEvent.class, new LinkedBlockingQueue<>());
+//		mapOfTopics.putIfAbsent(MissionReceivedEvent.class, new LinkedBlockingQueue<>());
 		mapOfTopics.putIfAbsent(TickBroadcast.class, new LinkedBlockingQueue<>());
-		mapOfTopics.putIfAbsent(AbortMissionEvent.class,new LinkedBlockingQueue<>());
-		mapOfTopics.putIfAbsent(SendAgentsEvent.class,new LinkedBlockingQueue<>());
+//		mapOfTopics.putIfAbsent(AbortMissionEvent.class,new LinkedBlockingQueue<>());
+//		mapOfTopics.putIfAbsent(SendAgentsEvent.class,new LinkedBlockingQueue<>());
 //		mapOfTopics.putIfAbsent(ExampleBroadcast.class,new LinkedBlockingQueue<>());
 //		mapOfTopics.putIfAbsent(ExampleEvent.class,new LinkedBlockingQueue<>());
 
-
-
+		
 	}
 
 	/**
@@ -50,15 +49,25 @@ public class MessageBrokerImpl implements MessageBroker {
 	@Override
 	public <T> void subscribeEvent(Class<? extends Event<T>> type, Subscriber m) {	//find the right type and add the sub to the right queue
 		// TODO Auto-generated method stub
-		mapOfTopics.get(type).add(m);
+		subscribeMessage(type,m);
 
 	}
 
 	@Override
 	public void subscribeBroadcast(Class<? extends Broadcast> type, Subscriber m) {
 		// TODO Auto-generated method stub
-		mapOfTopics.get(type).add(m);
+		subscribeMessage(type,m);
 
+	}
+
+	private void subscribeMessage(Class<? extends Message> type,Subscriber m){
+		mapOfTopics.putIfAbsent(type, new LinkedBlockingQueue<>());
+//		synchronized (mapOfTopics.get(type)){
+			LinkedBlockingQueue<Subscriber> Queue=mapOfTopics.get(type);
+			if(!Queue.contains(m)){
+				Queue.add(m);
+//			}
+		}
 	}
 
 	@Override
@@ -72,13 +81,12 @@ public class MessageBrokerImpl implements MessageBroker {
 	public void sendBroadcast(Broadcast b) {
 		// TODO Auto-generated method stub
 		LinkedBlockingQueue<Subscriber> subsToSend=mapOfTopics.get(b.getClass());
+		if (subsToSend==null)
+			return;
 		for(Subscriber sub: subsToSend){
-			try {
-				mapOfSubscribers.get(sub).put(b);
-			}
-			catch (InterruptedException e){
-				Thread.currentThread().interrupt();
-			}
+			LinkedBlockingQueue<Message> subMessQueue=mapOfSubscribers.get(sub);
+			if(subMessQueue!=null)
+				subMessQueue.add(b);
 		}
 	}
 
@@ -90,7 +98,12 @@ public class MessageBrokerImpl implements MessageBroker {
 		Future<T> future=new Future<T>();
 		try {
 			mapOfEvents.put(e, future);    //add future to the mapOfEvents
-			Subscriber sub = mapOfTopics.get(e.getClass()).take();    //we remove sub of the topic Queue
+			LinkedBlockingQueue<Subscriber>topicSubQueue = mapOfTopics.get(e.getClass());    //we remove sub of the topic Queue
+			if(topicSubQueue==null){	//TODO CHECK THIS ACTION!!!!!!
+				future.resolve(null);
+				return null;
+			}
+			Subscriber sub=topicSubQueue.take();
 			mapOfSubscribers.get(sub).put(e);    //add e to sub message Queue
 			mapOfTopics.get(e.getClass()).put(sub);    //round-Robin
 

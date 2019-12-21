@@ -106,6 +106,9 @@ public abstract class Subscriber extends RunnableSubPub {
      * message.
      */
     protected final void terminate() {
+        if(!callBackMap.isEmpty()){
+            ms.unregister(this);
+        }
         this.terminated = true;
     }
 
@@ -115,7 +118,7 @@ public abstract class Subscriber extends RunnableSubPub {
      */
     @Override
     public final void run() {
-//        ms.register(this);
+        ms.register(this);
         initialize();
         while (!terminated) {
             try {
@@ -127,25 +130,13 @@ public abstract class Subscriber extends RunnableSubPub {
 
 
                 callBackMap.get(message.getClass()).call(message);  //check this
-//                switch (message.getClass().toString()){
-//                    case "class bgu.spl.mics.application.Messeges.MissionReceivedEvent":
-//                        System.out.println("TODO");
-//                        break;
-//                    case "class bgu.spl.mics.application.Messeges.AgentsAvailableEvent":
-//                        MessageBrokerImpl.getInstance().sendEvent((AgentsAvailableEvent)message);
-//                        break;
-//                    case "class bgu.spl.mics.application.Messeges.GadgetAvailableEvent":
-//                        Callback<GadgetAvailableEvent> callback=callBackMap.get(message.getClass());
-//                        callback.call((GadgetAvailableEvent) message);
-//                        break;
-//                }
 
             }
             catch (InterruptedException e){
                 Thread.currentThread().interrupt();
             }
         }
-        MessageBrokerImpl.getInstance().unregister(this);   //TODO check about the unsubscribe too
+//        MessageBrokerImpl.getInstance().unregister(this);   //TODO check about the unsubscribe too
     }
 
 }

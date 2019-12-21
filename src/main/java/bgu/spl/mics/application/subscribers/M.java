@@ -31,7 +31,7 @@ public class M extends Subscriber {
 	@Override
 	protected void initialize() {
 		// TODO Implement this
-		MessageBrokerImpl.getInstance().register(this);
+//		MessageBrokerImpl.getInstance().register(this);
 //		MessageBrokerImpl.getInstance().subscribeEvent(MissionReceivedEvent.class,this);
 
 		Callback<MissionReceivedEvent> missionReceivedCallback=c -> {
