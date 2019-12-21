@@ -34,7 +34,7 @@ public class MessageBrokerImpl implements MessageBroker {
 //		mapOfTopics.putIfAbsent(ExampleBroadcast.class,new LinkedBlockingQueue<>());
 //		mapOfTopics.putIfAbsent(ExampleEvent.class,new LinkedBlockingQueue<>());
 
-		
+
 	}
 
 	/**

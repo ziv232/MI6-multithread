@@ -1,5 +1,7 @@
 package bgu.spl.mics;
 
+import bgu.spl.mics.application.Messeges.TerminationBroadCast;
+
 import java.util.HashMap;
 
 /**
@@ -120,6 +122,7 @@ public abstract class Subscriber extends RunnableSubPub {
     public final void run() {
         ms.register(this);
         initialize();
+        subscribeBroadcast(TerminationBroadCast.class,termination->terminate() );
         while (!terminated) {
             try {
                 Message message = ms.awaitMessage(this);
