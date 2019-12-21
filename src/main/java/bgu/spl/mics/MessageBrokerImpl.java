@@ -1,6 +1,7 @@
 package bgu.spl.mics;
 import bgu.spl.mics.application.Messeges.*;
 
+import java.util.Map;
 import java.util.concurrent.*;
 
 /**
@@ -84,10 +85,11 @@ public class MessageBrokerImpl implements MessageBroker {
 //		System.out.println(mapOfTopics.get(e.getClass()).size()+ " size of topic Q"+ e.getClass()+ "in broker sendEvent");
 		Future<T> future=new Future<T>();
 		try {
+			mapOfEvents.put(e, future);    //add future to the mapOfEvents
 			Subscriber sub = mapOfTopics.get(e.getClass()).take();    //we remove sub of the topic Queue
 			mapOfSubscribers.get(sub).put(e);    //add e to sub message Queue
 			mapOfTopics.get(e.getClass()).put(sub);    //round-Robin
-			mapOfEvents.put(e, future);    //add future to the mapOfEvents
+
 		}
 		catch (InterruptedException exp){
 			Thread.currentThread().interrupt();
@@ -119,8 +121,13 @@ public class MessageBrokerImpl implements MessageBroker {
 //			} catch (InterruptedException e) {
 //				Thread.currentThread().interrupt();
 //			}
-//		}
+//		}	TODO i tried to remove the Sub of all everyTopic Queue if exists there
+		for(Map.Entry<Class<? extends Message>, LinkedBlockingQueue<Subscriber>> topicQueue: mapOfTopics.entrySet()){
+			topicQueue.getValue().remove(m);
+		}
+
 		mapOfSubscribers.remove(m);
+		System.out.println("broker unregistered " + m.getClass()+ m.getName());
 	}
 
 	@Override
