@@ -78,7 +78,7 @@ public class Future<T> {
 		//TODO: implement this.
 		long miliSec=unit.toMillis(timeout);
 		
-		if(!isDone()) {		//TODO check if instead of while
+		while (!isDone()) {		//TODO check if instead of while
 			try{
 				wait(miliSec);
 			}

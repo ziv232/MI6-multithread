@@ -1,5 +1,7 @@
 package bgu.spl.mics;
 import bgu.spl.mics.application.Messeges.*;
+import bgu.spl.mics.example.messages.ExampleBroadcast;
+import bgu.spl.mics.example.messages.ExampleEvent;
 
 import java.util.Map;
 import java.util.concurrent.*;
@@ -29,6 +31,8 @@ public class MessageBrokerImpl implements MessageBroker {
 		mapOfTopics.putIfAbsent(TickBroadcast.class, new LinkedBlockingQueue<>());
 		mapOfTopics.putIfAbsent(AbortMissionEvent.class,new LinkedBlockingQueue<>());
 		mapOfTopics.putIfAbsent(SendAgentsEvent.class,new LinkedBlockingQueue<>());
+//		mapOfTopics.putIfAbsent(ExampleBroadcast.class,new LinkedBlockingQueue<>());
+//		mapOfTopics.putIfAbsent(ExampleEvent.class,new LinkedBlockingQueue<>());
 
 
 

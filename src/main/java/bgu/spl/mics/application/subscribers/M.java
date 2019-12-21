@@ -44,7 +44,7 @@ public class M extends Subscriber {
 				System.out.print("M"+ getName()+" call back, agents for mission "+ agent+ "  ");
 			}
 
-			Future<Boolean> agentsFut= MessageBrokerImpl.getInstance().sendEvent(agentsEvent);
+			Future<Boolean> agentsFut= getSimplePublisher().sendEvent(agentsEvent);
 
 			//M send agentsEvent
 
@@ -62,7 +62,7 @@ public class M extends Subscriber {
 			if(agentsAvailable){	//we acquired the agents
 //				System.out.println(true+"XXXXXXXXXXXXXXXXXXXXXXXXXXX");
 				GadgetAvailableEvent gadgetEvent=new GadgetAvailableEvent(c.getGadget());
-				Future<Boolean> gadgetFut=MessageBrokerImpl.getInstance().sendEvent(gadgetEvent);
+				Future<Boolean> gadgetFut=getSimplePublisher().sendEvent(gadgetEvent);
 
 				//GADGET EVENT
 
@@ -73,7 +73,7 @@ public class M extends Subscriber {
 				if(gadgetAvailable){	//we got the gadget- lets do the mission!
 					if(gadgetEvent.getTime()<=c.getTimeExpired()) {		//TODO we check if Q get the event before
 						SendAgentsEvent execute = new SendAgentsEvent(c.getDuration(),c.getAgentsSerialNumbers());
-						Future<Boolean> missionCompleted=MessageBrokerImpl.getInstance().sendEvent(execute);		//TODO we added new event for moneyPenny
+						Future<Boolean> missionCompleted=getSimplePublisher().sendEvent(execute);		//TODO we added new event for moneyPenny
 						missionCompleted.get();		//
 						System.out.println("M line 77- moneyPenny executed the mission");
 						complete(c, true);
@@ -102,7 +102,7 @@ public class M extends Subscriber {
 					else{	//TODO abort
 						System.out.println("MISSION abort- time expired "+ gadgetEvent.getTime()+"> "+ c.getTimeExpired());
 						AbortMissionEvent abort=new AbortMissionEvent(c.getAgentsSerialNumbers());
-						MessageBrokerImpl.getInstance().sendEvent(abort);
+						getSimplePublisher().sendEvent(abort);
 						complete(c,false);
 					}
 				}
@@ -111,7 +111,7 @@ public class M extends Subscriber {
 					System.out.println("MISSION abort- gadget "+ gadgetEvent.getGadget()+ " is not available");
 					AbortMissionEvent abort=new AbortMissionEvent(c.getAgentsSerialNumbers());
 					complete(c,false);
-					MessageBrokerImpl.getInstance().sendEvent(abort);
+					getSimplePublisher().sendEvent(abort);
 				}
 			}	//END OF BIG IF ------ we didnt got the agents so we wont try to get the gadget
 			else{	//TODO timeout means we need to abort mission

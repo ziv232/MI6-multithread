@@ -115,6 +115,7 @@ public abstract class Subscriber extends RunnableSubPub {
      */
     @Override
     public final void run() {
+//        ms.register(this);
         initialize();
         while (!terminated) {
             try {

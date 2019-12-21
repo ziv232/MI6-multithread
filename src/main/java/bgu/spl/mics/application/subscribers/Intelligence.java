@@ -58,7 +58,7 @@ public class Intelligence extends Subscriber {
 //						currTick=msg.getTick();
 //						System.out.println(currTick);
 						eventList.remove(0);
-						MessageBrokerImpl.getInstance().sendEvent(toSend);	//TODO WE DID NOT TAKE THE FUTURE AND PASTED IT TO 'M'
+						getSimplePublisher().sendEvent(toSend);	//TODO WE DID NOT TAKE THE FUTURE AND PASTED IT TO 'M'
 					}
 //				}
 //				catch (InterruptedException e){
