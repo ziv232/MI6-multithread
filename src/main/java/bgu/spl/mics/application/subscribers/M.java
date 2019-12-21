@@ -6,6 +6,7 @@ import bgu.spl.mics.application.passiveObjects.Diary;
 import bgu.spl.mics.application.passiveObjects.Report;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * M handles ReadyEvent - fills a report and sends agents to mission.
@@ -52,7 +53,7 @@ public class M extends Subscriber {
 			//TODO CHECK- I GONNA SEND EVENT OF EXECUTE OR NOT
 
 			System.out.println();
-			System.out.println("M "+getName()+" got the future answer on M callback");
+			System.out.println("M "+getName()+" got the future answer on M callback "+ agentsAvailable);
 
 			//
 
@@ -67,12 +68,14 @@ public class M extends Subscriber {
 
 				boolean gadgetAvailable=gadgetFut.get();
 
-				System.out.println(gadgetAvailable +"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ on M callBack");
+				System.out.println("gadegt "+c.getGadget()+ gadgetAvailable +"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ on M callBack");
 
 				if(gadgetAvailable){	//we got the gadget- lets do the mission!
 					if(gadgetEvent.getTime()<=c.getTimeExpired()) {		//TODO we check if Q get the event before
 						SendAgentsEvent execute = new SendAgentsEvent(c.getDuration(),c.getAgentsSerialNumbers());
-						MessageBrokerImpl.getInstance().sendEvent(execute);		//TODO we added new event for moneyPenny
+						Future<Boolean> missionCompleted=MessageBrokerImpl.getInstance().sendEvent(execute);		//TODO we added new event for moneyPenny
+						missionCompleted.get();		//
+						System.out.println("M line 77- moneyPenny executed the mission");
 						complete(c, true);
 						Report addToDiary=new Report();
 						//================================
@@ -80,17 +83,24 @@ public class M extends Subscriber {
 						addToDiary.setM(Integer.parseInt(this.getName()));
 						addToDiary.setMoneypenny(Integer.parseInt(agentsEvent.getMp().getName()));
 						addToDiary.setAgentsSerialNumbersNumber(c.getAgentsSerialNumbers());
-//						addToDiary.setAgentsNames();
+						addToDiary.setAgentsNames(execute.getAgentsNames());
 						addToDiary.setGadgetName(c.getGadget());
 						addToDiary.setTimeIssued(c.getTimeIssued());
 						addToDiary.setQTime(gadgetEvent.getTime());
-//						addToDiary.setTimeCreated();
+						addToDiary.setTimeCreated(getCurrTick());
 
-						//================================
-						System.out.println("M line 74 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+						Diary.getInstance().addReport(addToDiary);
+						//================================	//checking names
+
+						List<String> names=addToDiary.getAgentsNames();
+						for(String name:names)
+							System.out.print(name+ "  M");
+
+						System.out.println("M line 74: "+ c.getMissionName()+"XXXXXXXXXXXXXXXXXXX completed successfully");
 					}
 
 					else{	//TODO abort
+						System.out.println("MISSION abort- time expired "+ gadgetEvent.getTime()+"> "+ c.getTimeExpired());
 						AbortMissionEvent abort=new AbortMissionEvent(c.getAgentsSerialNumbers());
 						MessageBrokerImpl.getInstance().sendEvent(abort);
 						complete(c,false);
@@ -98,12 +108,14 @@ public class M extends Subscriber {
 				}
 				else{	//end of GADGETAVLIBLE if
 //					AbortMission
+					System.out.println("MISSION abort- gadget "+ gadgetEvent.getGadget()+ " is not available");
 					AbortMissionEvent abort=new AbortMissionEvent(c.getAgentsSerialNumbers());
 					complete(c,false);
 					MessageBrokerImpl.getInstance().sendEvent(abort);
 				}
 			}	//END OF BIG IF ------ we didnt got the agents so we wont try to get the gadget
 			else{	//TODO timeout means we need to abort mission
+				System.out.println("FFFFFFFFFFFFFFFFFFFFuckkkkkk");
 				complete(c,false);
 			}
 
@@ -116,6 +128,10 @@ public class M extends Subscriber {
 			currTick=c.getTick();
 			System.out.println("M"+getName()+" currTick is "+ currTick);
 //				System.out.println("M tickTime "+getCurrTick()+ "on M tickCallback ");
+
+			if(c.isTerminated()){
+				System.out.println("M is going to terminate");
+				terminate();}
 		};
 		subscribeBroadcast(TickBroadcast.class,tickCallback);
 		

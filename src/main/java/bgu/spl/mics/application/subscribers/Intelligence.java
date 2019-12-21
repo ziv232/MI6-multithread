@@ -65,9 +65,12 @@ public class Intelligence extends Subscriber {
 //					Thread.currentThread().interrupt();
 //				}
 			}
-//			else {	TODO TERMINATE
-//				terminate();
-//			}
+			else {
+				if (c.isTerminated()) {
+					System.out.println("intelligence "+getName()+" is going to terminate");
+					terminate();
+				}
+			}
 		};
 
 		subscribeBroadcast(TickBroadcast.class,tickCallBack);

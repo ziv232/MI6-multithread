@@ -9,6 +9,7 @@ import bgu.spl.mics.application.Messeges.SendAgentsEvent;
 import bgu.spl.mics.application.passiveObjects.Squad;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Only this type of Subscriber can access the squad.
@@ -48,8 +49,10 @@ public class Moneypenny extends Subscriber {
 			complete(c,true);	//TODO Hypoteticly i return true, but if we need to abort i need to return false
 		};	//callback
 
-		Callback<SendAgentsEvent> SendCallBack=c -> {
+		Callback<SendAgentsEvent> SendCallBack= (SendAgentsEvent c) -> {
 			Squad.GetInstance().sendAgents(c.getAgentsForMission(),c.getMissionTime());
+			List<String> serials=Squad.GetInstance().getAgentsNames(c.getAgentsForMission());	//moneyPenny gets the agentsSerials from Squad
+			c.setAgentsNames(serials);
 			complete(c,true);
 
 

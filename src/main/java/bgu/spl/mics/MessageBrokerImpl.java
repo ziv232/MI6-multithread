@@ -103,23 +103,23 @@ public class MessageBrokerImpl implements MessageBroker {
 	}
 
 	@Override
-	public void unregister(Subscriber m) {    //similar to the register, but we need to clear his EVENT queue TODO check if its the only 1 subscribe to the topic
+	public synchronized void unregister(Subscriber m) {    //similar to the register, but we need to clear his EVENT queue TODO check if its the only 1 subscribe to the topic
 		// TODO Auto-generated method stub
-		LinkedBlockingQueue<Message> messQ = mapOfSubscribers.get(m);    //get the sub Mess Queue
-		while (!messQ.isEmpty()) {
-			Message mess = messQ.poll();        //get a mess from his Queue
-//			LinkedBlockingQueue<Subscriber> topicSubQ=mapOfTopics.get(mess.getClass());
-			Subscriber sub = mapOfTopics.get(mess.getClass()).poll();
-			try {
-				if (sub.equals(m)) {    //if not the same sub- we will add a message to his Q and push him to the end of the topic Q
-					 sub = mapOfTopics.get(mess.getClass()).poll();
-				}
-					mapOfSubscribers.get(sub).put(mess);
-					mapOfTopics.get(mess.getClass()).put(sub);
-			} catch (InterruptedException e) {
-				Thread.currentThread().interrupt();
-			}
-		}
+//		LinkedBlockingQueue<Message> messQ = mapOfSubscribers.get(m);    //get the sub Mess Queue
+//		while (!messQ.isEmpty()) {
+//			Message mess = messQ.poll();        //get a mess from his Queue
+////			LinkedBlockingQueue<Subscriber> topicSubQ=mapOfTopics.get(mess.getClass());
+//			Subscriber sub = mapOfTopics.get(mess.getClass()).poll();
+//			try {
+//				if (sub.equals(m)) {    //if not the same sub- we will add a message to his Q and push him to the end of the topic Q
+//					 sub = mapOfTopics.get(mess.getClass()).poll();
+//				}
+//					mapOfSubscribers.get(sub).put(mess);
+//					mapOfTopics.get(mess.getClass()).put(sub);
+//			} catch (InterruptedException e) {
+//				Thread.currentThread().interrupt();
+//			}
+//		}
 		mapOfSubscribers.remove(m);
 	}
 
