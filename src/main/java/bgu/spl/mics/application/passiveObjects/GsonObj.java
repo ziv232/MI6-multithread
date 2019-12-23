@@ -32,7 +32,7 @@ public class GsonObj {
             public String[] serialAgentsNumbers;
             public int duration;
             public String gadget;
-            public String missionName;
+            public String name;
             public int timeExpired;
             public int timeIssued;
         }

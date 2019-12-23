@@ -23,7 +23,7 @@ public class MI6Runner {
         try {
             //Gson obj = new Gson();
             System.out.println("First Line of main");
-            String str = new String(Files.readAllBytes(Paths.get("src/main/java/bgu/spl/mics/application/input1")));
+            String str = new String(Files.readAllBytes(Paths.get("src/main/java/bgu/spl/mics/application/test2.json")));
             System.out.println("2nd Line of main");
 
             GsonObj obj = new Gson().fromJson(str, GsonObj.class);
@@ -86,7 +86,7 @@ public class MI6Runner {
                     }
 //                    System.out.println();
 //                    System.out.println("Parse between every mission created on class MI6");
-                    list.add(new MissionInfo(obj.services.intelligence[i].missions[j].missionName,
+                    list.add(new MissionInfo(obj.services.intelligence[i].missions[j].name,
                             agentslist,obj.services.intelligence[i].missions[j].gadget,
                             obj.services.intelligence[i].missions[j].timeIssued,obj.services.intelligence[i].missions[j].timeExpired,
                             obj.services.intelligence[i].missions[j].duration));//     Add the mission to the Intelligence missionList.
