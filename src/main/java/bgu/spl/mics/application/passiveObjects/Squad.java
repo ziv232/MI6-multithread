@@ -72,7 +72,7 @@ public class Squad {
 	 */
 	public void sendAgents(List<String> serials, int time)  {
 		try {
-			Thread.sleep(time);
+			Thread.sleep(time*100);
 			System.out.println("Squad, func sendAgents, Thread finished sleeping");
 
 			releaseAgents(serials);
@@ -88,34 +88,36 @@ public class Squad {
 	 * @param serials   the serial numbers of the agents
 	 * @return ‘false’ if an agent of serialNumber ‘serial’ is missing, and ‘true’ otherwise
 	 */
-	public synchronized boolean getAgents(List<String> serials) {	//TODO we need to remove sync
+	public boolean getAgents(List<String> serials) {    //TODO we need to remove sync
 		// TODO Implement this
-		for(String num: serials){
-			if(!agents.containsKey(num)){	//one of the agents does not exists
+		for (String num : serials) {
+			if (!agents.containsKey(num)) {    //one of the agents does not exists
 				return false;
 			}
 		}
-		boolean done=false;
-		while (!done) {
-			for (int i = 0; i < serials.size(); i++) {
-				if (!getAgent(serials.get(i)).isAvailable()) {    //if agent is unavailable- we check the loop from the start
-//					try {
-//						wait();		//TODO TODO TODO WAIT!!!!!
-						i = -1;
-//					} catch (InterruptedException e) {
-//						Thread.currentThread().interrupt();
-//					}
+		synchronized (this) {
+			boolean done = false;
+			while (!done) {
+				for (int i = 0; i < serials.size(); i++) {
+					if (!getAgent(serials.get(i)).isAvailable()) {    //if agent is unavailable- we check the loop from the start
+						try {
+							wait();        //TODO TODO TODO WAIT!!!!!
+							i = -1;
+						} catch (InterruptedException e) {
+							Thread.currentThread().interrupt();
+						}
+					}
 				}
-			}
 
 //			while(!getAgent(serial).isAvailable()) {	//we got only 1 semaphore therefore
 //				if (getAgent(serial).isAvailable()) {
 //					getAgent(serial).acquire();
 //				}
 //			}
-			done=acquireAgents(serials);
+				done = acquireAgents(serials);
+			}
+			return done;
 		}
-		return done;
 	}
 
 	/**

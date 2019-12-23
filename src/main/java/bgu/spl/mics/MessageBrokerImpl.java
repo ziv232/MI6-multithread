@@ -13,7 +13,7 @@ import java.util.concurrent.*;
  */
 public class MessageBrokerImpl implements MessageBroker {
 
-	private ConcurrentHashMap<Subscriber,LinkedBlockingQueue<Message>> mapOfSubscribers;	//not sure about the key and the value, we need a Queue
+	private ConcurrentHashMap<Subscriber,LinkedBlockingDeque<Message>> mapOfSubscribers;	//not sure about the key and the value, we need a Queue
 	private ConcurrentHashMap<Class<? extends Message>,LinkedBlockingQueue<Subscriber>> mapOfTopics;	//check
 	private ConcurrentHashMap<Event,Future> mapOfEvents;
 
@@ -84,9 +84,15 @@ public class MessageBrokerImpl implements MessageBroker {
 		if (subsToSend==null)
 			return;
 		for(Subscriber sub: subsToSend){
-			LinkedBlockingQueue<Message> subMessQueue=mapOfSubscribers.get(sub);
-			if(subMessQueue!=null)
-				subMessQueue.add(b);
+			LinkedBlockingDeque<Message> subMessQueue=mapOfSubscribers.get(sub);
+			if(subMessQueue!=null) {
+				if(b.getClass()==TerminationBroadCast.class){
+					subMessQueue.addFirst(b);
+				}
+				else {
+					subMessQueue.add(b);
+				}
+			}
 		}
 	}
 
@@ -99,11 +105,16 @@ public class MessageBrokerImpl implements MessageBroker {
 		try {
 			mapOfEvents.put(e, future);    //add future to the mapOfEvents
 			LinkedBlockingQueue<Subscriber>topicSubQueue = mapOfTopics.get(e.getClass());    //we remove sub of the topic Queue
-			if(topicSubQueue==null){	//TODO CHECK THIS ACTION!!!!!!
+			if(topicSubQueue.size()==0){	//TODO CHECK THIS ACTION!!!!!!
 				future.resolve(null);
 				return null;
 			}
-			Subscriber sub=topicSubQueue.take();
+			System.out.println(topicSubQueue.size()+" QQQQQQQQQQQQQQQQ SIZE");
+			Subscriber sub=topicSubQueue.poll();
+//			System.out.println("test"+sub.getClass()+sub.getName());
+			if(sub==null){
+				return null;
+			}
 			mapOfSubscribers.get(sub).put(e);    //add e to sub message Queue
 			mapOfTopics.get(e.getClass()).put(sub);    //round-Robin
 
@@ -117,13 +128,14 @@ public class MessageBrokerImpl implements MessageBroker {
 	@Override
 	public void register(Subscriber m) {	//assume we adding the sub name as key,and sub to the map
 		// TODO Auto-generated method stub
-		mapOfSubscribers.put(m,new LinkedBlockingQueue<Message>());
+		mapOfSubscribers.put(m,new LinkedBlockingDeque<Message>());
 
 	}
 
 	@Override
 	public synchronized void unregister(Subscriber m) {    //similar to the register, but we need to clear his EVENT queue TODO check if its the only 1 subscribe to the topic
 		// TODO Auto-generated method stub
+//		System.out.println("check ====================="+ m.getClass()+m.getName());
 //		LinkedBlockingQueue<Message> messQ = mapOfSubscribers.get(m);    //get the sub Mess Queue
 //		while (!messQ.isEmpty()) {
 //			Message mess = messQ.poll();        //get a mess from his Queue

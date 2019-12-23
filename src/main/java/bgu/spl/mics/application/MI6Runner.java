@@ -23,7 +23,7 @@ public class MI6Runner {
         try {
             //Gson obj = new Gson();
             System.out.println("First Line of main");
-            String str = new String(Files.readAllBytes(Paths.get("src/main/java/bgu/spl/mics/application/test2.json")));
+            String str = new String(Files.readAllBytes(Paths.get("src/main/java/bgu/spl/mics/application/testxxx.json")));
             System.out.println("2nd Line of main");
 
             GsonObj obj = new Gson().fromJson(str, GsonObj.class);

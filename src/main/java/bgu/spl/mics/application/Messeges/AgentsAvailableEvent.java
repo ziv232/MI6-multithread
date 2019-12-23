@@ -1,6 +1,7 @@
 package bgu.spl.mics.application.Messeges;
 
 import bgu.spl.mics.Event;
+import bgu.spl.mics.Future;
 import bgu.spl.mics.MessageBrokerImpl;
 import bgu.spl.mics.application.subscribers.Moneypenny;
 import java.util.ArrayList;
@@ -10,11 +11,15 @@ public class AgentsAvailableEvent implements Event<Boolean> {
     ArrayList<String> agentsForMission;
     ArrayList<String> agentsNames;
     private Moneypenny mp;
+    Future<Boolean> toSend;
+    int Duration;
 
-    public AgentsAvailableEvent(List<String> agentsList){
+    public AgentsAvailableEvent(List<String> agentsList,int duration){
         agentsForMission=new ArrayList<>(); //getting an agentsList and init the field
         agentsNames=new ArrayList<>();
         agentsForMission.addAll(agentsList);
+        toSend=new Future<>();
+        Duration=duration;
     }
 
     public void setMp(Moneypenny mp) {
@@ -34,6 +39,11 @@ public class AgentsAvailableEvent implements Event<Boolean> {
     public void sendAgentsAvailableEvent(){ //TODO CHECK
         MessageBrokerImpl.getInstance().sendEvent(this);
     }
+
+    public Future<Boolean> getFut(){return toSend;}
+
+    public void setToSend(boolean bool){toSend.resolve(bool);}
+    public int getDuration(){return Duration;}
 
 
 }

@@ -25,18 +25,18 @@ public class MessageBrokerTest {
 	
 	
 	
-    @BeforeEach
-    public void setUp(){
+//    @BeforeEach
+//    public void setUp(){
 //    	broker=new MessageBrokerImpl();
 //    	intel=new Intelligence("1");
 //    	money=new Moneypenny();
 //    	q=new Q();
 //    	m=new M();
 //    	event = new ExampleEvent("Moses");
-    	broad = new ExampleBroadcast("1");
-    	broker.register(m);
-    	broker.register(q);
-    }
+//    	broad = new ExampleBroadcast("1");
+//    	broker.register(m);
+//    	broker.register(q);
+//    }
 
     @Test
     public void subscribeBroadcast(){
