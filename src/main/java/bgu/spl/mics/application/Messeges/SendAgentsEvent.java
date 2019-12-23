@@ -5,7 +5,7 @@ import bgu.spl.mics.Event;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SendAgentsEvent implements Event<Boolean> {
+public class SendAgentsEvent implements Event<List<String>> {
     int missionTime;
     List<String> agentsForMission;
     List<String> agentsNames;
@@ -14,9 +14,7 @@ public class SendAgentsEvent implements Event<Boolean> {
         this.missionTime=missionTime;
         agentsNames=new ArrayList<>();
         agentsForMission=new ArrayList<>();
-        for(String agent:   agents){
-            agentsForMission.add(agent);
-        }
+        agentsForMission.addAll(agents);
     }
 
     public int getMissionTime(){return missionTime;}

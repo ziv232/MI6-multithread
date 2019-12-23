@@ -66,22 +66,22 @@ public class M extends Subscriber {
 			if(agentsAvailable){	//we acquired the agents
 //				System.out.println(true+"XXXXXXXXXXXXXXXXXXXXXXXXXXX");
 				GadgetAvailableEvent gadgetEvent=new GadgetAvailableEvent(c.getGadget());
-				Future<Boolean> gadgetFut=getSimplePublisher().sendEvent(gadgetEvent);
+				Future<Integer> gadgetFut=getSimplePublisher().sendEvent(gadgetEvent);
 
 				//GADGET EVENT
 				if(gadgetFut==null){
-					complete(gadgetEvent,false);
+					complete(gadgetEvent,-1);
 					return;
 				}
-				boolean gadgetAvailable=gadgetFut.get();
+				int gadgetAvailableTime=gadgetFut.get();
 
-				System.out.println("gadegt "+c.getGadget()+ gadgetAvailable +"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ on M callBack");
+				System.out.println("gadegt "+c.getGadget()+ gadgetAvailableTime +"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ on M callBack");
 
-				if(gadgetAvailable){	//we got the gadget- lets do the mission!
-					if(gadgetEvent.getTime()<=c.getTimeExpired()) {		//TODO we check if Q get the event before
+				if(gadgetAvailableTime!=-1){	//we got the gadget- lets do the mission!
+					if(gadgetAvailableTime<=c.getTimeExpired()) {		//TODO we check if Q get the event before
 						SendAgentsEvent execute = new SendAgentsEvent(c.getDuration(),c.getAgentsSerialNumbers());
-						Future<Boolean> missionCompleted=getSimplePublisher().sendEvent(execute);		//TODO we added new event for moneyPenny
-						missionCompleted.get();		//
+						Future<List<String>> missionCompleted=getSimplePublisher().sendEvent(execute);		//TODO we added new event for moneyPenny
+						List<String> names=missionCompleted.get();		//
 						System.out.println("M line 77- moneyPenny executed the mission");
 						complete(c, true);
 						Report addToDiary=new Report();
@@ -90,7 +90,7 @@ public class M extends Subscriber {
 						addToDiary.setM(Integer.parseInt(this.getName()));
 						addToDiary.setMoneypenny(Integer.parseInt(agentsEvent.getMp().getName()));
 						addToDiary.setAgentsSerialNumbersNumber(c.getAgentsSerialNumbers());
-						addToDiary.setAgentsNames(execute.getAgentsNames());
+						addToDiary.setAgentsNames(names);
 						addToDiary.setGadgetName(c.getGadget());
 						addToDiary.setTimeIssued(c.getTimeIssued());
 						addToDiary.setQTime(gadgetEvent.getTime());
@@ -99,9 +99,9 @@ public class M extends Subscriber {
 						Diary.getInstance().addReport(addToDiary);
 						//================================	//checking names
 
-						List<String> names=addToDiary.getAgentsNames();
+//						List<String> names=addToDiary.getAgentsNames();
 						for(String name:names)
-							System.out.print(name+ "  M");
+							System.out.print(name+ " name M");
 
 						System.out.println("M line 74: "+ c.getMissionName()+"XXXXXXXXXXXXXXXXXXX completed successfully");
 					}
@@ -133,7 +133,7 @@ public class M extends Subscriber {
 
 		Callback<TickBroadcast> tickCallback= (TickBroadcast c) -> {
 			currTick=c.getTick();
-			System.out.println("M"+getName()+" currTick is "+ currTick);
+//			System.out.println("M"+getName()+" currTick is "+ currTick);
 //				System.out.println("M tickTime "+getCurrTick()+ "on M tickCallback ");
 
 			if(c.isTerminated()){

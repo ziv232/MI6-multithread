@@ -13,9 +13,8 @@ public class AgentsAvailableEvent implements Event<Boolean> {
 
     public AgentsAvailableEvent(List<String> agentsList){
         agentsForMission=new ArrayList<>(); //getting an agentsList and init the field
-        for(String agent:agentsList){
-            agentsForMission.add(agent);
-        }
+        agentsNames=new ArrayList<>();
+        agentsForMission.addAll(agentsList);
     }
 
     public void setMp(Moneypenny mp) {
@@ -24,7 +23,14 @@ public class AgentsAvailableEvent implements Event<Boolean> {
 
     public Moneypenny getMp(){return mp;}
 
-    public synchronized List<String>getAgentsListForMission(){return agentsForMission;}
+    public List<String>getAgentsListForMission(){return agentsForMission;}
+
+    public List<String> getNames(){return agentsNames;}
+
+    public void setAgentsNames(List<String>names){
+        agentsNames.addAll(names);
+    }
+
     public void sendAgentsAvailableEvent(){ //TODO CHECK
         MessageBrokerImpl.getInstance().sendEvent(this);
     }

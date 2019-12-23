@@ -24,7 +24,7 @@ public class Moneypenny extends Subscriber {
 	public Moneypenny(String name) {
 		super(name);
 		System.out.println("MoneyPenny "+getName()+" created on MoneyPenny class");
-		sender= getName().equals("1");	//only first MoneyPenny will sendAgents
+		sender= Integer.parseInt(getName())%2==1;	//only half MoneyPennys will sendAgents
 		// TODO Implement this
 	}
 
@@ -33,7 +33,7 @@ public class Moneypenny extends Subscriber {
 		// TODO Implement this
 //		MessageBrokerImpl.getInstance().register(this);
 
-		Callback<AgentsAvailableEvent> AgentsEventCallback= c -> {
+		Callback<AgentsAvailableEvent> AgentsEventCallback= (AgentsAvailableEvent c) -> {
 			System.out.println("MoneyPenny "+getName()+ " received an event  on MoneyPenny Callback");
 			ArrayList<String>AgentsForMission= (ArrayList<String>) c.getAgentsListForMission();
 //			while(!Squad.GetInstance().getAgents(AgentsForMission)){
@@ -52,8 +52,8 @@ public class Moneypenny extends Subscriber {
 		Callback<SendAgentsEvent> SendCallBack= (SendAgentsEvent c) -> {
 			Squad.GetInstance().sendAgents(c.getAgentsForMission(),c.getMissionTime());
 			List<String> serials=Squad.GetInstance().getAgentsNames(c.getAgentsForMission());	//moneyPenny gets the agentsSerials from Squad
-			c.setAgentsNames(serials);
-			complete(c,true);
+//			c.setAgentsNames(serials);
+			complete(c,serials);
 
 
 		};
