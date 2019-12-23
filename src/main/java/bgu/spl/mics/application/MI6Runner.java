@@ -100,9 +100,14 @@ public class MI6Runner {
             ourBuddies.add(q);
             TimeService ts = new TimeService(obj.services.time);
             System.out.println("007 J bond");
+            //==================Array Of Threads==================
+
+            ArrayList<Thread> threadList = new ArrayList<Thread>();
+
             //=================Init all=================
             for(Subscriber sub:ourBuddies){
                 Thread t=new Thread(sub);
+                threadList.add(t);//Adding the thread to threadList
                 t.start();
             }
 
@@ -110,10 +115,14 @@ public class MI6Runner {
             System.out.println("wow");
             tsTread.start();
 
-            
+            for(Thread t : threadList){
+                t.join();
+            }
 
         } catch (IOException ignored) {
             System.out.println("fuckkkkkkkkkkkkkkkkkkkkkk .CATCH()");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
         Diary.getInstance().printToFile("Diary");
