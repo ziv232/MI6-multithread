@@ -43,7 +43,7 @@ public class MI6Runner {
 //                System.out.println(gadgets[i]);
 //            }
             //============Check InventoryPrint
-            Inventory.getInstance().printToFile("/users/studs/bsc/2020/zivshir/IdeaProjects/assignment2/src/main/java/bgu/spl/mics/application/InventoryOutPut.json");
+//            Inventory.getInstance().printToFile("/users/studs/bsc/2020/zivshir/IdeaProjects/assignment2/src/main/java/bgu/spl/mics/application/InventoryOutPut.json");
 
 
             Agent[] agents = new Agent[obj.squad.length];
