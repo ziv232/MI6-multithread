@@ -88,12 +88,12 @@ public class M extends Subscriber {
 						//================================
 						addToDiary.setMissionName(c.getMissionName());
 						addToDiary.setM(Integer.parseInt(this.getName()));
-						addToDiary.setMoneypenny(Integer.parseInt(agentsEvent.getMp().getName()));
+						addToDiary.setMoneypenny(Integer.parseInt(agentsEvent.getMp().getName()));	//TODO maybe do pair to get the info
 						addToDiary.setAgentsSerialNumbersNumber(c.getAgentsSerialNumbers());
 						addToDiary.setAgentsNames(names);
 						addToDiary.setGadgetName(c.getGadget());
 						addToDiary.setTimeIssued(c.getTimeIssued());
-						addToDiary.setQTime(gadgetEvent.getTime());
+						addToDiary.setQTime(gadgetAvailableTime);
 						addToDiary.setTimeCreated(getCurrTick());
 
 						Diary.getInstance().addReport(addToDiary);
