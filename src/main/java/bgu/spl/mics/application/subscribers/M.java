@@ -48,6 +48,11 @@ public class M extends Subscriber {
 
 			//M send agentsEvent
 
+			if(agentsFut==null){	//TODO check, and we return czo non got the msg
+				complete(agentsEvent,false);
+				return;
+			}
+
 			boolean agentsAvailable=agentsFut.get();
 
 			//TODO CHECK- I GONNA SEND EVENT OF EXECUTE OR NOT
@@ -58,14 +63,16 @@ public class M extends Subscriber {
 			//
 
 
-
 			if(agentsAvailable){	//we acquired the agents
 //				System.out.println(true+"XXXXXXXXXXXXXXXXXXXXXXXXXXX");
 				GadgetAvailableEvent gadgetEvent=new GadgetAvailableEvent(c.getGadget());
 				Future<Boolean> gadgetFut=getSimplePublisher().sendEvent(gadgetEvent);
 
 				//GADGET EVENT
-
+				if(gadgetFut==null){
+					complete(gadgetEvent,false);
+					return;
+				}
 				boolean gadgetAvailable=gadgetFut.get();
 
 				System.out.println("gadegt "+c.getGadget()+ gadgetAvailable +"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ on M callBack");
@@ -115,7 +122,7 @@ public class M extends Subscriber {
 				}
 			}	//END OF BIG IF ------ we didnt got the agents so we wont try to get the gadget
 			else{	//TODO timeout means we need to abort mission
-				System.out.println("FFFFFFFFFFFFFFFFFFFFuckkkkkk");
+				System.out.println("agents for mission do not exist");
 				complete(c,false);
 			}
 

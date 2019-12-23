@@ -88,8 +88,13 @@ public class Squad {
 	 * @param serials   the serial numbers of the agents
 	 * @return ‘false’ if an agent of serialNumber ‘serial’ is missing, and ‘true’ otherwise
 	 */
-	public synchronized boolean getAgents(List<String> serials) {
+	public synchronized boolean getAgents(List<String> serials) {	//TODO we need to remove sync
 		// TODO Implement this
+		for(String num: serials){
+			if(!agents.containsKey(num)){	//one of the agents does not exists
+				return false;
+			}
+		}
 		boolean done=false;
 		while (!done) {
 			for (int i = 0; i < serials.size(); i++) {

@@ -45,8 +45,8 @@ public class Moneypenny extends Subscriber {
 //				}
 //			}
 			c.setMp(this);
-			Squad.GetInstance().getAgents(AgentsForMission);	//TODO will always be true eventually
-			complete(c,true);	//TODO Hypoteticly i return true, but if we need to abort i need to return false
+			boolean answer=Squad.GetInstance().getAgents(AgentsForMission);	//
+			complete(c,answer);	//TODO Hypoteticly i return true, but if we need to abort i need to return false
 		};	//callback
 
 		Callback<SendAgentsEvent> SendCallBack= (SendAgentsEvent c) -> {
