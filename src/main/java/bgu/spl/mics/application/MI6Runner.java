@@ -84,8 +84,8 @@ public class MI6Runner {
                         agentslist.add(obj.services.intelligence[i].missions[j].serialAgentsNumbers[l]);
                         //System.out.println(agentslist.get(l));
                     }
-                    System.out.println();
-                    System.out.println("Parse between every mission created on class MI6");
+//                    System.out.println();
+//                    System.out.println("Parse between every mission created on class MI6");
                     list.add(new MissionInfo(obj.services.intelligence[i].missions[j].missionName,
                             agentslist,obj.services.intelligence[i].missions[j].gadget,
                             obj.services.intelligence[i].missions[j].timeIssued,obj.services.intelligence[i].missions[j].timeExpired,
@@ -110,9 +110,17 @@ public class MI6Runner {
             System.out.println("wow");
             tsTread.start();
 
+            
 
         } catch (IOException ignored) {
             System.out.println("fuckkkkkkkkkkkkkkkkkkkkkk .CATCH()");
+        }
+
+        Diary.getInstance().printToFile("Diary");
+        try {
+            Inventory.getInstance().printToFile("inventory");
+        } catch (IOException e) {
+            System.out.println("FUckkkkkkkkkkkkkkkkkkkkkkkkkkkkkdsdszxxxxxx");
         }
 
     }

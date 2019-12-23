@@ -74,11 +74,11 @@ public class Future<T> {
      * 	       wait for {@code timeout} TimeUnits {@code unit}. If time has
      *         elapsed, return null.
      */
-	public T get(long timeout, TimeUnit unit) {
+	public synchronized T get(long timeout, TimeUnit unit) {
 		//TODO: implement this.
 		long miliSec=unit.toMillis(timeout);
 		
-		if(!isDone()) {		//TODO check if instead of while
+		if (!isDone()) {		//TODO check if instead of while
 			try{
 				wait(miliSec);
 			}

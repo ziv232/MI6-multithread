@@ -29,15 +29,15 @@ public class Q extends Subscriber {
 	@Override
 	protected void initialize() {
 		// TODO Implement this
-		MessageBrokerImpl.getInstance().register(this);
+//		MessageBrokerImpl.getInstance().register(this);
 		Callback<GadgetAvailableEvent>gadgetCallback= c ->  {
-			c.setTime(getCurrTick());	//update when Q receive the event
+//			c.setTime(getCurrTick());	//update when Q receive the event
 
-			if(Inventory.getInstance().getItem(c.getGadget())){
-				complete(c,true);		//TODO CHECK if complete of broker or this
+			if(Inventory.getInstance().getItem(c.getGadget())){		//if gadget exist we return time, else return -1
+				complete(c,currTick);		//TODO CHECK if complete of broker or this
 			}
 			else{
-				complete(c,false);
+				complete(c,-1);
 			}
 		};	//callBack
 

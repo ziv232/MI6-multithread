@@ -3,7 +3,7 @@ package bgu.spl.mics.application.Messeges;
 import bgu.spl.mics.Event;
 import bgu.spl.mics.MessageBrokerImpl;
 
-public class GadgetAvailableEvent implements Event<Boolean> {
+public class GadgetAvailableEvent implements Event<Integer> {
     String gadget;
     boolean avaliable;
     private int time;

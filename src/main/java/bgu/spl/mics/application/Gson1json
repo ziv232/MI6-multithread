@@ -3,11 +3,15 @@
         "Sky Hook",
         "Geiger counter",
         "X-ray Glasses",
-        "Dagger shoe"
+        "Dagger shoe",
+        "a",
+        "b",
+        "c",
+        "hatul"
     ],
     "services": {
-        "M": 2,
-        "Moneypenny": 2,
+        "M": 5,
+        "Moneypenny": 3,
         "intelligence": [
             {
                 "missions": [
@@ -60,9 +64,59 @@
                         "missionName": "Thunderball",
                         "timeExpired": 15,
                         "timeIssued": 3
+                    },
+                    {
+                        "serialAgentsNumbers": [
+                            "006",
+                            "0010"
+                        ],
+                        "duration": 7,
+                        "gadget": "hatul",
+                        "missionName": "catsssss",
+                        "timeExpired": 20,
+                        "timeIssued": 6
                     }
                 ]
-            }
+            },
+            {
+                            "missions": [
+                                {
+                                    "serialAgentsNumbers": [
+                                        "006",
+                                        "008"
+                                    ],
+                                    "duration": 7,
+                                    "gadget": "a",
+                                    "missionName": "mission epsilon",
+                                    "timeExpired": 15,
+                                    "timeIssued": 3
+                                },
+                                {
+                                    "serialAgentsNumbers": ["006"],
+                                    "duration": 22,
+                                    "gadget": "b",
+                                    "missionName": "Fr",
+                                    "timeExpired": 8,
+                                    "timeIssued": 6
+                                },
+                                {
+                                    "serialAgentsNumbers": ["007"],
+                                    "duration": 2,
+                                    "gadget": "Dagger shoe",
+                                    "missionName": "From Russia With Love",
+                                    "timeExpired": 100,
+                                    "timeIssued": 15
+                                },
+                                {
+                                    "serialAgentsNumbers": ["006"],
+                                    "duration": 2,
+                                    "gadget": "X-ray Glasses",
+                                    "missionName": "The World Is Not Enough",
+                                    "timeExpired": 100,
+                                    "timeIssued": 16
+                                }
+                            ]
+                        }
         ],
         "time": 25
     },
@@ -72,8 +126,21 @@
             "serialNumber": "007"
         },
         {
-            "name": "Alec Trevelyan",
+            "name": "Alec ",
             "serialNumber": "006"
+        },
+        {
+            "name": "Alec Trevelyan",
+            "serialNumber": "008"
+        },
+        {
+            "name": "Belic",
+            "serialNumber": "009"
+        },
+        {
+            "name": "sini",
+            "serialNumber": "0010"
         }
+
     ]
 }

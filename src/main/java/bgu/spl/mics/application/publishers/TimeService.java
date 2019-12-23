@@ -1,5 +1,6 @@
 package bgu.spl.mics.application.publishers;
 import bgu.spl.mics.Publisher;
+import bgu.spl.mics.application.Messeges.TerminationBroadCast;
 import bgu.spl.mics.application.Messeges.TickBroadcast;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -40,7 +41,7 @@ public class TimeService extends Publisher {
 	@Override
 	public void run() {
 		//this.startTime=System.currentTimeMillis();
-		while(tick.get()<duration){
+		while(tick.get()<=duration){
 			getSimplePublisher().sendBroadcast(new TickBroadcast(tick.get(),false));
 			try { Thread.sleep(step); }
 			catch (InterruptedException e){ throw new IllegalStateException(e.getMessage()); }
@@ -53,7 +54,7 @@ public class TimeService extends Publisher {
 			//tick.compareAndSet(tick,currentTick);
 
 		}
-		getSimplePublisher().sendBroadcast(new TickBroadcast(tick.get(),true));
+		getSimplePublisher().sendBroadcast(new TerminationBroadCast());
 	}
 
 }

@@ -37,7 +37,7 @@ public class Intelligence extends Subscriber {
 
 	@Override
 	protected void initialize() {
-		MessageBrokerImpl.getInstance().register(this);
+//		MessageBrokerImpl.getInstance().register(this);
 		for(int i=0;i<this.missions.size();i++){
 			eventList.add(new MissionReceivedEvent(missions.get(i).getMissionName(),
 					(ArrayList<String>) missions.get(i).getSerialAgentsNumbers(),missions.get(i).getGadget(),
@@ -58,7 +58,7 @@ public class Intelligence extends Subscriber {
 //						currTick=msg.getTick();
 //						System.out.println(currTick);
 						eventList.remove(0);
-						MessageBrokerImpl.getInstance().sendEvent(toSend);	//TODO WE DID NOT TAKE THE FUTURE AND PASTED IT TO 'M'
+						getSimplePublisher().sendEvent(toSend);	//TODO WE DID NOT TAKE THE FUTURE AND PASTED IT TO 'M'
 					}
 //				}
 //				catch (InterruptedException e){

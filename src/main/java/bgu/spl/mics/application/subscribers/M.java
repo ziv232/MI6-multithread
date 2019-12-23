@@ -31,7 +31,7 @@ public class M extends Subscriber {
 	@Override
 	protected void initialize() {
 		// TODO Implement this
-		MessageBrokerImpl.getInstance().register(this);
+//		MessageBrokerImpl.getInstance().register(this);
 //		MessageBrokerImpl.getInstance().subscribeEvent(MissionReceivedEvent.class,this);
 
 		Callback<MissionReceivedEvent> missionReceivedCallback=c -> {
@@ -44,9 +44,14 @@ public class M extends Subscriber {
 				System.out.print("M"+ getName()+" call back, agents for mission "+ agent+ "  ");
 			}
 
-			Future<Boolean> agentsFut= MessageBrokerImpl.getInstance().sendEvent(agentsEvent);
+			Future<Boolean> agentsFut= getSimplePublisher().sendEvent(agentsEvent);
 
 			//M send agentsEvent
+
+			if(agentsFut==null){	//TODO check, and we return czo non got the msg
+				complete(agentsEvent,false);
+				return;
+			}
 
 			boolean agentsAvailable=agentsFut.get();
 
@@ -58,23 +63,25 @@ public class M extends Subscriber {
 			//
 
 
-
 			if(agentsAvailable){	//we acquired the agents
 //				System.out.println(true+"XXXXXXXXXXXXXXXXXXXXXXXXXXX");
 				GadgetAvailableEvent gadgetEvent=new GadgetAvailableEvent(c.getGadget());
-				Future<Boolean> gadgetFut=MessageBrokerImpl.getInstance().sendEvent(gadgetEvent);
+				Future<Integer> gadgetFut=getSimplePublisher().sendEvent(gadgetEvent);
 
 				//GADGET EVENT
+				if(gadgetFut==null){
+					complete(gadgetEvent,-1);
+					return;
+				}
+				int gadgetAvailableTime=gadgetFut.get();
 
-				boolean gadgetAvailable=gadgetFut.get();
+				System.out.println("gadegt "+c.getGadget()+ gadgetAvailableTime +"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ on M callBack");
 
-				System.out.println("gadegt "+c.getGadget()+ gadgetAvailable +"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ on M callBack");
-
-				if(gadgetAvailable){	//we got the gadget- lets do the mission!
-					if(gadgetEvent.getTime()<=c.getTimeExpired()) {		//TODO we check if Q get the event before
+				if(gadgetAvailableTime!=-1){	//we got the gadget- lets do the mission!
+					if(gadgetAvailableTime<=c.getTimeExpired()) {		//TODO we check if Q get the event before
 						SendAgentsEvent execute = new SendAgentsEvent(c.getDuration(),c.getAgentsSerialNumbers());
-						Future<Boolean> missionCompleted=MessageBrokerImpl.getInstance().sendEvent(execute);		//TODO we added new event for moneyPenny
-						missionCompleted.get();		//
+						Future<List<String>> missionCompleted=getSimplePublisher().sendEvent(execute);		//TODO we added new event for moneyPenny
+						List<String> names=missionCompleted.get();		//
 						System.out.println("M line 77- moneyPenny executed the mission");
 						complete(c, true);
 						Report addToDiary=new Report();
@@ -83,7 +90,7 @@ public class M extends Subscriber {
 						addToDiary.setM(Integer.parseInt(this.getName()));
 						addToDiary.setMoneypenny(Integer.parseInt(agentsEvent.getMp().getName()));
 						addToDiary.setAgentsSerialNumbersNumber(c.getAgentsSerialNumbers());
-						addToDiary.setAgentsNames(execute.getAgentsNames());
+						addToDiary.setAgentsNames(names);
 						addToDiary.setGadgetName(c.getGadget());
 						addToDiary.setTimeIssued(c.getTimeIssued());
 						addToDiary.setQTime(gadgetEvent.getTime());
@@ -92,9 +99,9 @@ public class M extends Subscriber {
 						Diary.getInstance().addReport(addToDiary);
 						//================================	//checking names
 
-						List<String> names=addToDiary.getAgentsNames();
+//						List<String> names=addToDiary.getAgentsNames();
 						for(String name:names)
-							System.out.print(name+ "  M");
+							System.out.print(name+ " name M");
 
 						System.out.println("M line 74: "+ c.getMissionName()+"XXXXXXXXXXXXXXXXXXX completed successfully");
 					}
@@ -102,7 +109,7 @@ public class M extends Subscriber {
 					else{	//TODO abort
 						System.out.println("MISSION abort- time expired "+ gadgetEvent.getTime()+"> "+ c.getTimeExpired());
 						AbortMissionEvent abort=new AbortMissionEvent(c.getAgentsSerialNumbers());
-						MessageBrokerImpl.getInstance().sendEvent(abort);
+						getSimplePublisher().sendEvent(abort);
 						complete(c,false);
 					}
 				}
@@ -111,11 +118,11 @@ public class M extends Subscriber {
 					System.out.println("MISSION abort- gadget "+ gadgetEvent.getGadget()+ " is not available");
 					AbortMissionEvent abort=new AbortMissionEvent(c.getAgentsSerialNumbers());
 					complete(c,false);
-					MessageBrokerImpl.getInstance().sendEvent(abort);
+					getSimplePublisher().sendEvent(abort);
 				}
 			}	//END OF BIG IF ------ we didnt got the agents so we wont try to get the gadget
 			else{	//TODO timeout means we need to abort mission
-				System.out.println("FFFFFFFFFFFFFFFFFFFFuckkkkkk");
+				System.out.println("agents for mission do not exist");
 				complete(c,false);
 			}
 
@@ -126,7 +133,7 @@ public class M extends Subscriber {
 
 		Callback<TickBroadcast> tickCallback= (TickBroadcast c) -> {
 			currTick=c.getTick();
-			System.out.println("M"+getName()+" currTick is "+ currTick);
+//			System.out.println("M"+getName()+" currTick is "+ currTick);
 //				System.out.println("M tickTime "+getCurrTick()+ "on M tickCallback ");
 
 			if(c.isTerminated()){
