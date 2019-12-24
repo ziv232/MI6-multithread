@@ -23,7 +23,7 @@ public class MI6Runner {
         try {
             //Gson obj = new Gson();
             System.out.println("First Line of main");
-            String str = new String(Files.readAllBytes(Paths.get("src/main/java/bgu/spl/mics/application/testxxx.json")));
+            String str = new String(Files.readAllBytes(Paths.get("src/main/java/bgu/spl/mics/application/test1.json")));
             System.out.println("2nd Line of main");
 
             GsonObj obj = new Gson().fromJson(str, GsonObj.class);
@@ -125,7 +125,7 @@ public class MI6Runner {
             e.printStackTrace();
         }
 
-        Diary.getInstance().printToFile("Diary");
+        Diary.getInstance().printToFile("diary");
         try {
             Inventory.getInstance().printToFile("inventory");
         } catch (IOException e) {
