@@ -25,7 +25,7 @@ public class Inventory {
      */
 	//Constructor
 	public Inventory() {
-		this.gadgets = new ArrayList<String>();
+		this.gadgets = new ArrayList<>();
 	}
 	public static Inventory getInstance() {
 		return InventoryHolder.instance;
@@ -39,8 +39,8 @@ public class Inventory {
      * 						of the inventory.
      */
 	public void load (String[] inventory) {
-		for(int i=0;i<inventory.length;i++) {
-			getInstance().getGadgets().add(inventory[i]);
+		for (String s : inventory) {
+			getInstance().getGadgets().add(s);
 		}
 	}
 	
@@ -67,7 +67,7 @@ public class Inventory {
 	 * list of all the of the gadgeds.
 	 * This method is called by the main method in order to generate the output.
 	 */
-	public void printToFile(String filename) throws IOException {
+	public void printToFile(String filename){
 		try {
 			FileWriter writer = new FileWriter(filename);
 			Gson gson = new Gson().newBuilder().create();
@@ -85,5 +85,3 @@ public class Inventory {
 		return this.gadgets;
 	}
 }
-
-//TEST 1,2,1

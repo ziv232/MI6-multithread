@@ -6,7 +6,6 @@ import bgu.spl.mics.application.passiveObjects.Diary;
 import bgu.spl.mics.application.passiveObjects.Report;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * M handles ReadyEvent - fills a report and sends agents to mission.
@@ -49,13 +48,7 @@ public class M extends Subscriber {
 
 			boolean agentsAvailable=agentsFut.get();
 
-			//TODO CHECK- I GONNA SEND EVENT OF EXECUTE OR NOT
-
-			System.out.println();
-			System.out.println("M "+getName()+" got the future answer on M callback "+ agentsAvailable);
-
-			//
-
+			//System.out.println("M "+getName()+" got the future answer on M callback "+ agentsAvailable);
 
 			if(agentsAvailable){	//we acquired the agents
 				GadgetAvailableEvent gadgetEvent=new GadgetAvailableEvent(c.getGadget());
@@ -73,8 +66,6 @@ public class M extends Subscriber {
 				if(gadgetAvailableTime!=-1){	//we got the gadget- lets do the mission!
 					if(gadgetAvailableTime<=c.getTimeExpired()) {		//TODO we check if Q get the event before
 						agentsEvent.setToSend(true);
-						System.out.println("M "+getName()+ " ~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-						
 						complete(c, true);
 						Report addToDiary=new Report();
 						//================================
@@ -90,35 +81,20 @@ public class M extends Subscriber {
 
 						Diary.getInstance().addReport(addToDiary);
 						//================================	//checking names
-
-//						List<String> names=addToDiary.getAgentsNames();
-//						for(String name:names)
-//							System.out.print(name+ " name M");
-
-						System.out.println("M line 74: "+ c.getMissionName()+"XXXXXXXXXXXXXXXXXXX completed successfully");
 					}
 
 					else{	//TODO abort
-						System.out.println("MISSION abort- time expired "+ gadgetEvent.getTime()+"> "+ c.getTimeExpired());
-//						AbortMissionEvent abort=new AbortMissionEvent(c.getAgentsSerialNumbers());
-//						getSimplePublisher().sendEvent(abort);
 						agentsEvent.setToSend(false);
 						complete(c,false);
 					}
 				}
 				else{	//end of GADGETAVLIBLE if
-//					AbortMission
-//					System.out.println("MISSION abort- gadget "+ gadgetEvent.getGadget()+ " is not available");
-//					AbortMissionEvent abort=new AbortMissionEvent(c.getAgentsSerialNumbers());
-//					complete(c,false);
-//					getSimplePublisher().sendEvent(abort);
 					agentsEvent.setToSend(false);
 					complete(c,false);
 
 				}
 			}	//END OF BIG IF ------ we didnt got the agents so we wont try to get the gadget
 			else{	//TODO timeout means we need to abort mission
-				System.out.println("agents for mission do not exist");
 				complete(c,false);
 			}
 
@@ -129,12 +105,8 @@ public class M extends Subscriber {
 
 		Callback<TickBroadcast> tickCallback= (TickBroadcast c) -> {
 			currTick=c.getTick();
-//			System.out.println("M"+getName()+" currTick is "+ currTick);
-//				System.out.println("M tickTime "+getCurrTick()+ "on M tickCallback ");
 
 			if(c.isTerminated()){
-				Diary.getInstance().printToFile("/users/studs/bsc/2020/zivshir/IdeaProjects/assignment2/src/main/java/bgu/spl/mics/application/DiaryOutPut.json");
-				System.out.println("M is going to terminate");
 				terminate();}
 		};
 		subscribeBroadcast(TickBroadcast.class,tickCallback);

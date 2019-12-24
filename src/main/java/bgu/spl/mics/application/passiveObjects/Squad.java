@@ -1,7 +1,5 @@
 package bgu.spl.mics.application.passiveObjects;
 import java.util.*;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Passive data-object representing a information about an agent in MI6.
@@ -16,28 +14,12 @@ public class Squad {
 	}
 
 	private Map<String, Agent> agents= new HashMap<>();
-//	private Semaphore semaphore=new Semaphore(1);
 
 	/**
 	 * Retrieves the single instance of this class.
 	 */
 	public static Squad GetInstance() {return SquadHolder.instance;}
 
-	
-	
-	private int getMapSize() {
-		return agents.size();
-	}
-	
-
-//	private Map<String,Agent> getAgentsMap() {
-//		return agents;
-//	}
-
-	private Agent getAgent(String serialNumber) {
-		return agents.get(serialNumber);
-
-	}
 
 	/**
 	 * Initializes the squad. This method adds all the agents to the squad.
@@ -64,7 +46,6 @@ public class Squad {
 		for(String serial: serials) {	//for each agent, if is in the squad- release.
 			agents.get(serial).release();
 		}
-		// TODO Implement this
 //		notifyAll();	//released all the agents, now threads can look for them
 	}
 
@@ -127,22 +108,7 @@ public class Squad {
 //		}
 	}
 
-	/**
-	 * check again if none of the agents of the list got acqired in the meanwhile, and acquire them all if possible
-	 * @param serials	list of serial numbers of the agents to acquire
-	 * @return 'true' if none got some agent in the meanwhile or 'false' else
-	 */
-	private  boolean acquireAgents(List<String> serials){
-		Collections.sort(serials);
-		for (String serial : serials) {
-			if (!getAgent(serial).isAvailable())    //check that each agent is avaliable
-				return false;
-		}
-		for (String serial : serials) {
-			getAgent(serial).acquire();
-		}
-		return true;
-	}
+
 
     /**
      * gets the agents names

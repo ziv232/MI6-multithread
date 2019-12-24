@@ -27,7 +27,6 @@ public class Agent {
 	}
 	
 	public void setSerialNumber(String serialNumber) {
-		// TODO Implement this
 		this.serialNumber=serialNumber;
 	}
 
@@ -37,7 +36,6 @@ public class Agent {
      * @return The serial number of an agent.
      */
 	public String getSerialNumber() {
-		// TODO Implement this
 		return this.serialNumber;
 	}
 
@@ -45,7 +43,6 @@ public class Agent {
 	 * Sets the name of the agent.
 	 */
 	public void setName(String name) {
-		// TODO Implement this
 		this.name=name;
 	}
 
@@ -55,7 +52,6 @@ public class Agent {
      * @return the name of the agent.
      */
 	public String getName() {
-		// TODO Implement this
 		return this.name;
 	}
 
@@ -65,7 +61,6 @@ public class Agent {
      * @return if the agent is available.
      */
 	public boolean isAvailable() {
-		// TODO Implement this
 		return available;
 	}
 
@@ -73,7 +68,6 @@ public class Agent {
 	 * Acquires an agent.
 	 */
 	public void acquire(){
-		// TODO Implement this
 
 		try {
 			semaphore.acquire();
@@ -88,7 +82,6 @@ public class Agent {
 	 * Releases an agent.
 	 */
 	public void release(){
-		// TODO Implement this
 		available=true;
 		semaphore.release();
 	}

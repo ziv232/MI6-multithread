@@ -57,8 +57,6 @@ public abstract class Subscriber extends RunnableSubPub {
     protected final <T, E extends Event<T>> void subscribeEvent(Class<E> type, Callback<E> callback) {
         callBackMap.putIfAbsent(type,callback);
         ms.subscribeEvent(type,this);
-
-        //TODO: implement this.
     }
 
     /**
@@ -84,7 +82,6 @@ public abstract class Subscriber extends RunnableSubPub {
     protected final <B extends Broadcast> void subscribeBroadcast(Class<B> type, Callback<B> callback) {
         callBackMap.put(type,callback);
         ms.subscribeBroadcast(type,this);
-        //TODO: implement this.
     }
 
     /**
@@ -98,9 +95,7 @@ public abstract class Subscriber extends RunnableSubPub {
      *               {@code e}.
      */
     protected final <T> void complete(Event<T> e, T result) {
-        //TODO: implement this.
         ms.complete(e,result);
-//        notifyAll();
     }
 
     /**
@@ -115,7 +110,7 @@ public abstract class Subscriber extends RunnableSubPub {
     }
 
     /**
-     * The entry point of the Subscriber. TODO: you must complete this code
+     * The entry point of the Subscriber.
      * otherwise you will end up in an infinite loop.
      */
     @Override
@@ -127,19 +122,12 @@ public abstract class Subscriber extends RunnableSubPub {
             try {
                 Message message = ms.awaitMessage(this);
 //                System.out.println("BOOOOOOOOOOOOOOOOOOOOOM");
-
-
 //                System.out.println(message.getClass().toString()+"    "+getClass()+ getName());
-
-
                 callBackMap.get(message.getClass()).call(message);  //check this
-
             }
             catch (InterruptedException e){
                 Thread.currentThread().interrupt();
             }
         }
-//        MessageBrokerImpl.getInstance().unregister(this);   //TODO check about the unsubscribe too
     }
-
 }

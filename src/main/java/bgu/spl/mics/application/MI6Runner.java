@@ -1,5 +1,4 @@
 package bgu.spl.mics.application;
-
 import bgu.spl.mics.Subscriber;
 import bgu.spl.mics.application.passiveObjects.*;
 import bgu.spl.mics.application.publishers.TimeService;
@@ -8,7 +7,6 @@ import bgu.spl.mics.application.subscribers.M;
 import bgu.spl.mics.application.subscribers.Moneypenny;
 import bgu.spl.mics.application.subscribers.Q;
 import com.google.gson.Gson;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -23,11 +21,11 @@ import java.util.concurrent.CountDownLatch;
 public class MI6Runner {
     public static void main(String[] args){
         try {
-            String str = new String(Files.readAllBytes(Paths.get("src/main/java/bgu/spl/mics/application/test5.json")));
+            String str = new String(Files.readAllBytes(Paths.get("src/main/java/bgu/spl/mics/application/test1.json")));
             GsonObj obj = new Gson().fromJson(str, GsonObj.class);
 
 
-            ArrayList<Subscriber> ourBuddies = new ArrayList<Subscriber>();//List of all the Subscribers
+            ArrayList<Subscriber> ourBuddies = new ArrayList<>();//List of all the Subscribers
             String[] gadgets = new String[obj.inventory.size()];
             for(int i=0;i<obj.inventory.size();i++){//Reading the Gadgets from the JSON
                 gadgets[i] = obj.inventory.get(i);
@@ -39,8 +37,6 @@ public class MI6Runner {
                 agents[i]=new Agent(obj.squad[i].name,obj.squad[i].serialNumber);//Reading the Agents from the JSON
             }
             Squad.GetInstance().load(agents);//Loading the Squad
-            for(int i=0;i<agents.length;i++){
-            }
 
             for(int i=0;i<obj.services.M;i++){//Create the M instances and push them to the List of Instances
                 int name = i+1;
@@ -56,7 +52,7 @@ public class MI6Runner {
 
 
             for (int i=0;i<obj.services.intelligence.length;i++){   //Loop all the Intelligence
-                ArrayList<MissionInfo> list = new ArrayList<MissionInfo>();
+                ArrayList<MissionInfo> list = new ArrayList<>();
 
                 Intelligence intel = new Intelligence(Integer.toString(i+1));//
                 for(int j=0;j<obj.services.intelligence[i].missions.length;j++){    //Loop all over the missions of each Intel
@@ -76,7 +72,7 @@ public class MI6Runner {
             TimeService ts = new TimeService(obj.services.time);
             //==================Array Of Threads==================
 
-            ArrayList<Thread> threadList = new ArrayList<Thread>();
+            ArrayList<Thread> threadList = new ArrayList<>();
 
             CountDownLatch latch=new CountDownLatch(ourBuddies.size());//Latch to start the TimeService at the right time.
             //=================Init all==========================
@@ -102,10 +98,7 @@ public class MI6Runner {
         }
 
         Diary.getInstance().printToFile("diary");
-        try {
-            Inventory.getInstance().printToFile("inventory");
-        } catch (IOException e) {
-        }
+        Inventory.getInstance().printToFile("inventory");
 
     }
 }

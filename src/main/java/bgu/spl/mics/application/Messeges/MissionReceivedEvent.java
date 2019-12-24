@@ -14,10 +14,8 @@ public class MissionReceivedEvent implements Event<Boolean> {
 
     public MissionReceivedEvent(String missionName, ArrayList<String> agentsSerialNumbers, String gadget,int timeIssued, int timeExpired, int duration){
         this.missionName=missionName;
-        this.agentsSerialNumbers= new ArrayList<String>();
-        for(String serNum:agentsSerialNumbers){
-            this.agentsSerialNumbers.add(serNum);
-        }
+        this.agentsSerialNumbers= new ArrayList<>();
+        this.agentsSerialNumbers.addAll(agentsSerialNumbers);
         this.gadget=gadget;
         this.timeIssued=timeIssued;
         this.timeExpired=timeExpired;

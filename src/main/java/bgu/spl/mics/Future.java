@@ -19,7 +19,6 @@ public class Future<T> {
 	 * This should be the the only public constructor in this class.
 	 */
 	public Future() {
-		//TODO: implement this
 		isdone=false;
 		answer=null;
 	}
@@ -33,7 +32,6 @@ public class Future<T> {
      * 	       
      */
 	public synchronized T get() {
-		//TODO: implement this.
 		while(!isDone()) {
 			try{
 				wait();
@@ -49,7 +47,7 @@ public class Future<T> {
 	/**
      * Resolves the result of this Future object.
      */
-	public synchronized void resolve (T result) {//Changed to Synchronized
+	public synchronized void resolve (T result) {
 		isdone=true;
 		answer=result;
 		notifyAll();//Notify to all the threads that waiting for a result.
@@ -75,10 +73,8 @@ public class Future<T> {
      *         elapsed, return null.
      */
 	public synchronized T get(long timeout, TimeUnit unit) {
-		//TODO: implement this.
 		long miliSec=unit.toMillis(timeout);
-		
-		if (!isDone()) {		//TODO check if instead of while
+		if (!isDone()) {	
 			try{
 				wait(miliSec);
 			}

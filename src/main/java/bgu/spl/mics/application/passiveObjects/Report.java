@@ -18,13 +18,12 @@ public class Report {
 	private String gadgetName;
 	private int timeIssued;
 	private int Qtime;
-	private int timeCreated;	//TODO
+	private int timeCreated;
 
 	/**
      * Retrieves the mission name.
      */
 	public String getMissionName() {
-		// TODO Implement this
 		return missionName;
 	}
 
@@ -32,7 +31,6 @@ public class Report {
 	 * Sets the mission name.
 	 */
 	public void setMissionName(String missionName) {
-		// TODO Implement this
 		this.missionName=missionName;
 	}
 
@@ -40,7 +38,6 @@ public class Report {
 	 * Retrieves the M's id.
 	 */
 	public int getM() {
-		// TODO Implement this
 		return MNumber;
 	}
 
@@ -48,7 +45,6 @@ public class Report {
 	 * Sets the M's id.
 	 */
 	public void setM(int m) {
-		// TODO Implement this
 		MNumber=m;
 	}
 
@@ -56,7 +52,6 @@ public class Report {
 	 * Retrieves the Moneypenny's id.
 	 */
 	public int getMoneypenny() {
-		// TODO Implement this
 		return MoneyPennyNumber;
 	}
 
@@ -64,7 +59,6 @@ public class Report {
 	 * Sets the Moneypenny's id.
 	 */
 	public void setMoneypenny(int moneypenny) {
-		// TODO Implement this
 		MoneyPennyNumber=moneypenny;
 	}
 
@@ -74,7 +68,6 @@ public class Report {
 	 * @return The serial numbers of the agents.
 	 */
 	public List<String> getAgentsSerialNumbersNumber() {
-		// TODO Implement this
 		return agentsSerialNumbers;
 	}
 
@@ -82,7 +75,6 @@ public class Report {
 	 * Sets the serial numbers of the agents.
 	 */
 	public void setAgentsSerialNumbersNumber(List<String> agentsSerialNumbersNumber) {
-		// TODO Implement this
 		this.agentsSerialNumbers.addAll(agentsSerialNumbersNumber);
 	}
 
@@ -92,7 +84,6 @@ public class Report {
 	 * @return The agents names.
 	 */
 	public List<String> getAgentsNames() {
-		// TODO Implement this
 		return agentsNames;
 	}
 
@@ -100,7 +91,6 @@ public class Report {
 	 * Sets the agents names.
 	 */
 	public void setAgentsNames(List<String> agentsNames) {
-		// TODO Implement this
 		this.agentsNames.addAll(agentsNames);
 	}
 
@@ -110,7 +100,6 @@ public class Report {
 	 * @return the name of the gadget.
 	 */
 	public String getGadgetName() {
-		// TODO Implement this
 		return gadgetName;
 	}
 
@@ -118,7 +107,6 @@ public class Report {
 	 * Sets the name of the gadget.
 	 */
 	public void setGadgetName(String gadgetName) {
-		// TODO Implement this
 		this.gadgetName=gadgetName;
 	}
 
@@ -126,7 +114,6 @@ public class Report {
 	 * Retrieves the time-tick in which Q Received the GadgetAvailableEvent for that mission.
 	 */
 	public int getQTime() {
-		// TODO Implement this
 		return Qtime;
 	}
 
@@ -134,7 +121,6 @@ public class Report {
 	 * Sets the time-tick in which Q Received the GadgetAvailableEvent for that mission.
 	 */
 	public void setQTime(int qTime) {
-		// TODO Implement this
 		Qtime=qTime;
 	}
 
@@ -142,7 +128,6 @@ public class Report {
 	 * Retrieves the time when the mission was sent by an Intelligence Publisher.
 	 */
 	public int getTimeIssued() {
-		// TODO Implement this
 		return timeIssued;
 	}
 
@@ -150,7 +135,6 @@ public class Report {
 	 * Sets the time when the mission was sent by an Intelligence Publisher.
 	 */
 	public void setTimeIssued(int timeIssued) {
-		// TODO Implement this
 		this.timeIssued=timeIssued;
 	}
 
@@ -158,7 +142,6 @@ public class Report {
 	 * Retrieves the time-tick when the report has been created.
 	 */
 	public int getTimeCreated() {
-		// TODO Implement this
 		return timeCreated;
 	}
 
@@ -166,7 +149,6 @@ public class Report {
 	 * Sets the time-tick when the report has been created.
 	 */
 	public void setTimeCreated(int timeCreated) {
-		// TODO Implement this
 		this.timeCreated=timeCreated;
 	}
 }

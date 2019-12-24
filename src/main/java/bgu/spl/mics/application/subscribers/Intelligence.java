@@ -1,7 +1,6 @@
 package bgu.spl.mics.application.subscribers;
 
 import bgu.spl.mics.Callback;
-import bgu.spl.mics.MessageBrokerImpl;
 import bgu.spl.mics.Subscriber;
 import bgu.spl.mics.application.Messeges.TickBroadcast;
 import bgu.spl.mics.application.Messeges.MissionReceivedEvent;
@@ -26,7 +25,7 @@ public class Intelligence extends Subscriber {
 	public Intelligence(String name) {
 		super(name);
 		this.currTick =0;
-		this.eventList = new ArrayList<MissionReceivedEvent>();
+		this.eventList = new ArrayList<>();
 	}
 
 	@Override
@@ -68,14 +67,6 @@ public class Intelligence extends Subscriber {
 
 	public void setMissions(List<MissionInfo> missions){
 		this.missions=missions;
-	}
-
-	public void setEventList(List<MissionReceivedEvent> list){
-		this.eventList=list;
-	}
-
-	public List<MissionReceivedEvent> getEventList(){
-		return eventList;
 	}
 
 }

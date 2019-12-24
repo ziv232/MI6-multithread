@@ -1,7 +1,6 @@
 package bgu.spl.mics.application.Messeges;
 
 import bgu.spl.mics.Event;
-
 import java.util.ArrayList;
 import java.util.List;
 

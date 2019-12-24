@@ -18,19 +18,13 @@ public class TimeService extends Publisher {
 	private final int step;
 	private int duration;
 	private AtomicInteger tick;
-//	private boolean terminate;
-	//private long startTime;
-
-
 
 	public TimeService(int duration) {
 		super("clock");
 		this.step = 100;
 		this.duration = duration;
 		this.tick = new AtomicInteger(1);
-//		this.terminate=false;
-		//this.startTime = 0;
-		System.out.println("TimeService "+getName()+" created on class TimeService");
+		//System.out.println("TimeService "+getName()+" created on class TimeService");
 	}
 
 	@Override
@@ -40,23 +34,13 @@ public class TimeService extends Publisher {
 
 	@Override
 	public void run() {
-//		try {
-//			Thread.sleep(1000);
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//		}
-		//this.startTime=System.currentTimeMillis();
 		while(tick.get()<=duration){
 			getSimplePublisher().sendBroadcast(new TickBroadcast(tick.get(),false));
 			try { Thread.sleep(step); }
 			catch (InterruptedException e){ throw new IllegalStateException(e.getMessage()); }
-
 //			System.out.println("tick "+tick.get());
 			tick.incrementAndGet();
 
-
-			//int currentTick = (int)((System.currentTimeMillis()-startTime)/step);
-			//tick.compareAndSet(tick,currentTick);
 
 		}
 		getSimplePublisher().sendBroadcast(new TerminationBroadCast());

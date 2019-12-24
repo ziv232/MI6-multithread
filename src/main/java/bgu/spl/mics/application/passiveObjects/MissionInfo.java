@@ -32,7 +32,6 @@ public class MissionInfo {
      * Sets the name of the mission.
      */
     public void setMissionName(String missionName) {
-        // TODO Implement this
     }
 
 	/**
@@ -46,7 +45,6 @@ public class MissionInfo {
      * Sets the serial agent number.
      */
     public void setSerialAgentsNumbers(List<String> serialAgentsNumbers) {
-        // TODO Implement this
     }
 
 	/**
@@ -60,7 +58,6 @@ public class MissionInfo {
      * Sets the gadget name.
      */
     public void setGadget(String gadget) {
-        // TODO Implement this
     }
 
 	/**
@@ -74,7 +71,6 @@ public class MissionInfo {
      * Sets the time the mission was issued in milliseconds.
      */
     public void setTimeIssued(int timeIssued) {
-        // TODO Implement this
     }
 
 	/**
@@ -88,7 +84,6 @@ public class MissionInfo {
      * Sets the time that if it that time passed the mission should be aborted.
      */
     public void setTimeExpired(int timeExpired) {
-        // TODO Implement this
     }
 
 	/**
@@ -102,7 +97,6 @@ public class MissionInfo {
      * Sets the duration of the mission in time-ticks.
      */
     public void setDuration(int duration) {
-        // TODO Implement this
     }
 
 	/**

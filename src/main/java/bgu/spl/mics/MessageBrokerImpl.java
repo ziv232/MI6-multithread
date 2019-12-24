@@ -25,15 +25,7 @@ public class MessageBrokerImpl implements MessageBroker {
 		mapOfTopics=new ConcurrentHashMap<>();
 		mapOfEvents=new ConcurrentHashMap<>();
 		//==========add every topic to map===========
-//		mapOfTopics.putIfAbsent(AgentsAvailableEvent.class, new LinkedBlockingQueue<>());
-//		mapOfTopics.putIfAbsent(GadgetAvailableEvent.class, new LinkedBlockingQueue<>());
-//		mapOfTopics.putIfAbsent(MissionReceivedEvent.class, new LinkedBlockingQueue<>());
 		mapOfTopics.putIfAbsent(TickBroadcast.class, new LinkedBlockingQueue<>());
-//		mapOfTopics.putIfAbsent(AbortMissionEvent.class,new LinkedBlockingQueue<>());
-//		mapOfTopics.putIfAbsent(SendAgentsEvent.class,new LinkedBlockingQueue<>());
-//		mapOfTopics.putIfAbsent(ExampleBroadcast.class,new LinkedBlockingQueue<>());
-//		mapOfTopics.putIfAbsent(ExampleEvent.class,new LinkedBlockingQueue<>());
-
 
 	}
 
@@ -41,21 +33,18 @@ public class MessageBrokerImpl implements MessageBroker {
 	 * Retrieves the single instance of this class.
 	 */
 	public static MessageBroker getInstance() {
-		//TODO: Implement this
 		return MessageBrokerHolder.instance;
 	}
 
 
 	@Override
 	public <T> void subscribeEvent(Class<? extends Event<T>> type, Subscriber m) {	//find the right type and add the sub to the right queue
-		// TODO Auto-generated method stub
 		subscribeMessage(type,m);
 
 	}
 
 	@Override
 	public void subscribeBroadcast(Class<? extends Broadcast> type, Subscriber m) {
-		// TODO Auto-generated method stub
 		subscribeMessage(type,m);
 
 	}
@@ -72,14 +61,12 @@ public class MessageBrokerImpl implements MessageBroker {
 
 	@Override
 	public <T> void complete(Event<T> e, T result) {
-		// TODO Auto-generated method stub
 		mapOfEvents.get(e).resolve(result);
 
 	}
 
 	@Override
 	public void sendBroadcast(Broadcast b) {
-		// TODO Auto-generated method stub
 		LinkedBlockingQueue<Subscriber> subsToSend=mapOfTopics.get(b.getClass());
 		if (subsToSend==null)
 			return;
@@ -99,17 +86,16 @@ public class MessageBrokerImpl implements MessageBroker {
 	
 	@Override
 	public <T> Future<T> sendEvent(Event<T> e) {
-		// TODO Auto-generated method stub
 //		System.out.println(mapOfTopics.get(e.getClass()).size()+ " size of topic Q"+ e.getClass()+ "in broker sendEvent");
-		Future<T> future=new Future<T>();
+		Future<T> future=new Future<>();
 		try {
 			mapOfEvents.put(e, future);    //add future to the mapOfEvents
 			LinkedBlockingQueue<Subscriber>topicSubQueue = mapOfTopics.get(e.getClass());    //we remove sub of the topic Queue
-			if(topicSubQueue.size()==0){	//TODO CHECK THIS ACTION!!!!!!
+			if(topicSubQueue.size()==0){	//TO DO CHECK THIS ACTION!!!!!!
 				future.resolve(null);
 				return null;
 			}
-			System.out.println(topicSubQueue.size()+" QQQQQQQQQQQQQQQQ SIZE");
+//			System.out.println(topicSubQueue.size()+" QQQQQQQQQQQQQQQQ SIZE");
 			Subscriber sub=topicSubQueue.poll();
 //			System.out.println("test"+sub.getClass()+sub.getName());
 			if(sub==null){
@@ -127,30 +113,12 @@ public class MessageBrokerImpl implements MessageBroker {
 
 	@Override
 	public void register(Subscriber m) {	//assume we adding the sub name as key,and sub to the map
-		// TODO Auto-generated method stub
-		mapOfSubscribers.put(m,new LinkedBlockingDeque<Message>());
+		mapOfSubscribers.put(m,new LinkedBlockingDeque<>());
 
 	}
 
 	@Override
-	public synchronized void unregister(Subscriber m) {    //similar to the register, but we need to clear his EVENT queue TODO check if its the only 1 subscribe to the topic
-		// TODO Auto-generated method stub
-//		System.out.println("check ====================="+ m.getClass()+m.getName());
-//		LinkedBlockingQueue<Message> messQ = mapOfSubscribers.get(m);    //get the sub Mess Queue
-//		while (!messQ.isEmpty()) {
-//			Message mess = messQ.poll();        //get a mess from his Queue
-////			LinkedBlockingQueue<Subscriber> topicSubQ=mapOfTopics.get(mess.getClass());
-//			Subscriber sub = mapOfTopics.get(mess.getClass()).poll();
-//			try {
-//				if (sub.equals(m)) {    //if not the same sub- we will add a message to his Q and push him to the end of the topic Q
-//					 sub = mapOfTopics.get(mess.getClass()).poll();
-//				}
-//					mapOfSubscribers.get(sub).put(mess);
-//					mapOfTopics.get(mess.getClass()).put(sub);
-//			} catch (InterruptedException e) {
-//				Thread.currentThread().interrupt();
-//			}
-//		}	TODO i tried to remove the Sub of all everyTopic Queue if exists there
+	public synchronized void unregister(Subscriber m) {    //similar to the register, but we need to clear his EVENT queue
 		for(Map.Entry<Class<? extends Message>, LinkedBlockingQueue<Subscriber>> topicQueue: mapOfTopics.entrySet()){
 			topicQueue.getValue().remove(m);
 		}
@@ -161,8 +129,7 @@ public class MessageBrokerImpl implements MessageBroker {
 
 	@Override
 	public Message awaitMessage(Subscriber m) throws InterruptedException {
-		// TODO Auto-generated method stub
-		return mapOfSubscribers.get(m).take();	//TODO we just removed the first message, but we did nothing
+		return mapOfSubscribers.get(m).take();
 	}
 
 	

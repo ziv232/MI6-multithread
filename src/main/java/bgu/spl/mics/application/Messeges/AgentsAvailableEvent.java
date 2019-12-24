@@ -2,7 +2,6 @@ package bgu.spl.mics.application.Messeges;
 
 import bgu.spl.mics.Event;
 import bgu.spl.mics.Future;
-import bgu.spl.mics.MessageBrokerImpl;
 import bgu.spl.mics.application.subscribers.Moneypenny;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,10 +33,6 @@ public class AgentsAvailableEvent implements Event<Boolean> {
 
     public void setAgentsNames(List<String>names){
         agentsNames.addAll(names);
-    }
-
-    public void sendAgentsAvailableEvent(){ //TODO CHECK
-        MessageBrokerImpl.getInstance().sendEvent(this);
     }
 
     public Future<Boolean> getFut(){return toSend;}

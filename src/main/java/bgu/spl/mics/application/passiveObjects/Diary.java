@@ -24,7 +24,7 @@ public class Diary {
 	private AtomicInteger total;
 	//Constructor
 	private Diary(){
-		this.reports = new ArrayList<Report>();
+		this.reports = new ArrayList<>();
 		this.total = new AtomicInteger(0);
 	}
 
