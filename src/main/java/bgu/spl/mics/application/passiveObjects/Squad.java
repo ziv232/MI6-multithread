@@ -56,7 +56,7 @@ public class Squad {
 	public void sendAgents(List<String> serials, int time)  {
 		try {
 			Thread.sleep(time*100);
-			System.out.println("Squad, func sendAgents, Thread finished sleeping");
+//			System.out.println("Squad, func sendAgents, Thread finished sleeping");
 
 			releaseAgents(serials);
 		}

@@ -21,7 +21,7 @@ import java.util.concurrent.CountDownLatch;
 public class MI6Runner {
     public static void main(String[] args){
         try {
-            String str = new String(Files.readAllBytes(Paths.get("src/main/java/bgu/spl/mics/application/test1.json")));
+            String str = new String(Files.readAllBytes(Paths.get(args[0])));
             GsonObj obj = new Gson().fromJson(str, GsonObj.class);
 
 
@@ -96,9 +96,8 @@ public class MI6Runner {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-        Diary.getInstance().printToFile("diary");
-        Inventory.getInstance().printToFile("inventory");
+        Inventory.getInstance().printToFile(args[1]);
+        Diary.getInstance().printToFile(args[2]);
 
     }
 }

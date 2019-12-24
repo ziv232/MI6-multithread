@@ -32,10 +32,10 @@ public class M extends Subscriber {
 			Diary.getInstance().incrementTotal();
 			AgentsAvailableEvent agentsEvent=new AgentsAvailableEvent(c.getAgentsSerialNumbers(),c.getDuration());
 
-			ArrayList<String> agentsList= (ArrayList<String>) agentsEvent.getAgentsListForMission();
-			for(String agent:agentsList){
-				System.out.print("M"+ getName()+" call back, agents for mission "+ agent+ "  ");
-			}
+//			ArrayList<String> agentsList= (ArrayList<String>) agentsEvent.getAgentsListForMission();
+//			for(String agent:agentsList){
+//				System.out.print("M"+ getName()+" call back, agents for mission "+ agent+ "  ");
+//			}
 
 			Future<Boolean> agentsFut= getSimplePublisher().sendEvent(agentsEvent);
 

@@ -103,7 +103,6 @@ public class MessageBrokerImpl implements MessageBroker {
 			}
 			mapOfSubscribers.get(sub).put(e);    //add e to sub message Queue
 			mapOfTopics.get(e.getClass()).put(sub);    //round-Robin
-
 		}
 		catch (InterruptedException exp){
 			Thread.currentThread().interrupt();
@@ -114,7 +113,6 @@ public class MessageBrokerImpl implements MessageBroker {
 	@Override
 	public void register(Subscriber m) {	//assume we adding the sub name as key,and sub to the map
 		mapOfSubscribers.put(m,new LinkedBlockingDeque<>());
-
 	}
 
 	@Override
@@ -122,16 +120,12 @@ public class MessageBrokerImpl implements MessageBroker {
 		for(Map.Entry<Class<? extends Message>, LinkedBlockingQueue<Subscriber>> topicQueue: mapOfTopics.entrySet()){
 			topicQueue.getValue().remove(m);
 		}
-
 		mapOfSubscribers.remove(m);
-		System.out.println("broker unregistered " + m.getClass()+ m.getName());
+//		System.out.println("broker unregistered " + m.getClass()+ m.getName());
 	}
 
 	@Override
 	public Message awaitMessage(Subscriber m) throws InterruptedException {
 		return mapOfSubscribers.get(m).take();
 	}
-
-	
-
 }
