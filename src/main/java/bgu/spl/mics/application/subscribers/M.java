@@ -64,7 +64,7 @@ public class M extends Subscriber {
 
 
 				if(gadgetAvailableTime!=-1){	//we got the gadget- lets do the mission!
-					if(gadgetAvailableTime<=c.getTimeExpired()) {		//TODO we check if Q get the event before
+					if(getCurrTick()<=c.getTimeExpired()) {		//TODO we check if Q get the event before
 						agentsEvent.setToSend(true);
 						complete(c, true);
 						Report addToDiary=new Report();

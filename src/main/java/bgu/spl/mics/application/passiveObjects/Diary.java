@@ -82,13 +82,18 @@ public class Diary {
 	}
 
 	public void incrementTotal(){
-		int current = getTotal();
-		int next = current+1;
-		if(total.compareAndSet(current,next)){
-		}
-		else{
-			this.incrementTotal();
-		}
+//		int current = getTotal();
+//		int next = current+1;
+//		if(total.compareAndSet(current,next)){
+//		}
+//		else{
+//			this.incrementTotal();
+//		}
+		int val;
+		do{
+			val=total.get();
+		}while (!total.compareAndSet(val,val+1));
+//		total.incrementAndGet();
 
 	}
 }
