@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SendAgentsEvent implements Event<List<String>> {
-    int missionTime;
-    List<String> agentsForMission;
-    List<String> agentsNames;
+    private int missionTime;
+    private List<String> agentsForMission;
+    private List<String> agentsNames;
 
     public SendAgentsEvent(int missionTime, List<String> agents){
         this.missionTime=missionTime;

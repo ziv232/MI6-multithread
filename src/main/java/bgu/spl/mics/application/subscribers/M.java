@@ -20,8 +20,6 @@ public class M extends Subscriber {
 
 	public M(String name) {
 		super(name);
-		System.out.println("M "+getName()+" created on M class");
-		// TODO Implement this
 	}
 
 	public int getCurrTick() {
@@ -30,12 +28,8 @@ public class M extends Subscriber {
 
 	@Override
 	protected void initialize() {
-		// TODO Implement this
-//		MessageBrokerImpl.getInstance().register(this);
-//		MessageBrokerImpl.getInstance().subscribeEvent(MissionReceivedEvent.class,this);
 
 		Callback<MissionReceivedEvent> missionReceivedCallback=c -> {
-			//TODO add to the diary
 			Diary.getInstance().incrementTotal();
 			AgentsAvailableEvent agentsEvent=new AgentsAvailableEvent(c.getAgentsSerialNumbers(),c.getDuration());
 
@@ -64,32 +58,23 @@ public class M extends Subscriber {
 
 
 			if(agentsAvailable){	//we acquired the agents
-//				System.out.println(true+"XXXXXXXXXXXXXXXXXXXXXXXXXXX");
 				GadgetAvailableEvent gadgetEvent=new GadgetAvailableEvent(c.getGadget());
 				Future<Integer> gadgetFut=getSimplePublisher().sendEvent(gadgetEvent);
-//				System.out.println("M "+getName()+ " got inXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 
 				//GADGET EVENT
 				if(gadgetFut==null){
-//					System.out.println("==================73===================");
 					complete(gadgetEvent,-1);
 					agentsEvent.setToSend(false);
 					return;
 				}
-//				System.out.println("M "+getName()+ " got in=====================XXXXXXXXXXXXXXXXXXXXXXXXXXX");
 				int gadgetAvailableTime=gadgetFut.get();	// TODO CHECKKKKKKK
 
-//				System.out.println("gadegt "+c.getGadget()+ gadgetAvailableTime +"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ on M callBack");
 
 				if(gadgetAvailableTime!=-1){	//we got the gadget- lets do the mission!
 					if(gadgetAvailableTime<=c.getTimeExpired()) {		//TODO we check if Q get the event before
 						agentsEvent.setToSend(true);
 						System.out.println("M "+getName()+ " ~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-
-//						SendAgentsEvent execute = new SendAgentsEvent(c.getDuration(),c.getAgentsSerialNumbers());
-//						Future<List<String>> missionCompleted=getSimplePublisher().sendEvent(execute);		//TODO we added new event for moneyPenny
-//						List<String> names=missionCompleted.get();		//
-						System.out.println("M line 77- moneyPenny executed the mission");
+						
 						complete(c, true);
 						Report addToDiary=new Report();
 						//================================

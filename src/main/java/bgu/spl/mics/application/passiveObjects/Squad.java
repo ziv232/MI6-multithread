@@ -1,6 +1,7 @@
 package bgu.spl.mics.application.passiveObjects;
 import java.util.*;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Passive data-object representing a information about an agent in MI6.
@@ -15,7 +16,7 @@ public class Squad {
 	}
 
 	private Map<String, Agent> agents= new HashMap<>();
-	private Semaphore semaphore=new Semaphore(1);
+//	private Semaphore semaphore=new Semaphore(1);
 
 	/**
 	 * Retrieves the single instance of this class.
@@ -35,6 +36,7 @@ public class Squad {
 
 	private Agent getAgent(String serialNumber) {
 		return agents.get(serialNumber);
+
 	}
 
 	/**
@@ -90,34 +92,39 @@ public class Squad {
 	 */
 	public boolean getAgents(List<String> serials) {    //TODO we need to remove sync
 		// TODO Implement this
+		Collections.sort(serials);//Sorting the List of SerialNumbers to AVOID DEADLOCK.
 		for (String num : serials) {
 			if (!agents.containsKey(num)) {    //one of the agents does not exists
 				return false;
 			}
 		}
-		synchronized (this) {
-			boolean done = false;
-			while (!done) {
-				for (int i = 0; i < serials.size(); i++) {
-					if (!getAgent(serials.get(i)).isAvailable()) {    //if agent is unavailable- we check the loop from the start
-						try {
-							wait();        //TODO TODO TODO WAIT!!!!!
-							i = -1;
-						} catch (InterruptedException e) {
-							Thread.currentThread().interrupt();
-						}
-					}
+//		synchronized (this) {
+			boolean done = true;
+//			while (!done) {
+				for (String seri:serials) {
+					agents.get(seri).acquire();
+
+
+//					if (!getAgent(serials.get(i)).isAvailable()) {    //if agent is unavailable- we check the loop from the start
+//						try {
+//							wait();        //TODO TODO TODO WAIT!!!!!
+//							i = -1;
+//						} catch (InterruptedException e) {
+//							Thread.currentThread().interrupt();
+//						}
+//					}
 				}
 
 //			while(!getAgent(serial).isAvailable()) {	//we got only 1 semaphore therefore
 //				if (getAgent(serial).isAvailable()) {
 //					getAgent(serial).acquire();
 //				}
+//
 //			}
-				done = acquireAgents(serials);
-			}
+//				done = acquireAgents(serials);
+//			}
 			return done;
-		}
+//		}
 	}
 
 	/**
@@ -125,7 +132,8 @@ public class Squad {
 	 * @param serials	list of serial numbers of the agents to acquire
 	 * @return 'true' if none got some agent in the meanwhile or 'false' else
 	 */
-	private synchronized boolean acquireAgents(List<String> serials){
+	private  boolean acquireAgents(List<String> serials){
+		Collections.sort(serials);
 		for (String serial : serials) {
 			if (!getAgent(serial).isAvailable())    //check that each agent is avaliable
 				return false;

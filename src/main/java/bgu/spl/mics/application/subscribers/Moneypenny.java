@@ -20,11 +20,11 @@ import java.util.List;
  * You MAY change constructor signatures and even add new public constructors.
  */
 public class Moneypenny extends Subscriber {
-	private boolean sender;
+	private boolean sender;//TODO check if neccessery.
 
 	public Moneypenny(String name) {
 		super(name);
-		System.out.println("MoneyPenny "+getName()+" created on MoneyPenny class");
+//		System.out.println("MoneyPenny "+getName()+" created on MoneyPenny class");
 		sender= Integer.parseInt(getName())%2==1;	//only half MoneyPennys will sendAgents
 		// TODO Implement this
 	}

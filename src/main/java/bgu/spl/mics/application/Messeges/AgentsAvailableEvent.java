@@ -8,12 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AgentsAvailableEvent implements Event<Boolean> {
-    ArrayList<String> agentsForMission;
-    ArrayList<String> agentsNames;
+    private ArrayList<String> agentsForMission;
+    private ArrayList<String> agentsNames;
     private Moneypenny mp;
-    Future<Boolean> toSend;
-    int Duration;
-
+    private Future<Boolean> toSend;
+    private int Duration;
+    //Constructor
     public AgentsAvailableEvent(List<String> agentsList,int duration){
         agentsForMission=new ArrayList<>(); //getting an agentsList and init the field
         agentsNames=new ArrayList<>();

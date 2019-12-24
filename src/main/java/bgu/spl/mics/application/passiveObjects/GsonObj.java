@@ -3,7 +3,6 @@ package bgu.spl.mics.application.passiveObjects;
 import java.util.List;
 
 public class GsonObj {
-    //public GsonGadget[] inventory;
    public List<String> inventory;
    public GsonSquad[] squad;
    public GsonService services;

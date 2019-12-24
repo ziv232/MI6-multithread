@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AbortMissionEvent implements Event<Boolean> {
-    List<String> agentsToRelease;
+    private List<String> agentsToRelease;
 
     public AbortMissionEvent(List<String> agents){
         agentsToRelease=new ArrayList<>();
@@ -15,7 +15,4 @@ public class AbortMissionEvent implements Event<Boolean> {
         }
     }
 
-    public List<String> getAgentsToRelease() {
-        return agentsToRelease;
-    }
 }

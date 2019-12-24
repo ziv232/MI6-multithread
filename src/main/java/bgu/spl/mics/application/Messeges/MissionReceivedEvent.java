@@ -5,12 +5,12 @@ import bgu.spl.mics.Event;
 import java.util.ArrayList;
 
 public class MissionReceivedEvent implements Event<Boolean> {
-    String missionName;
-    ArrayList<String> agentsSerialNumbers;
-    String gadget;
-    int timeIssued;
-    int timeExpired;
-    int duration;
+    private String missionName;
+    private ArrayList<String> agentsSerialNumbers;
+    private String gadget;
+    private int timeIssued;
+    private int timeExpired;
+    private int duration;
 
     public MissionReceivedEvent(String missionName, ArrayList<String> agentsSerialNumbers, String gadget,int timeIssued, int timeExpired, int duration){
         this.missionName=missionName;

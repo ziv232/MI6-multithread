@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.concurrent.CountDownLatch;
 
 /** This is the Main class of the application. You should parse the input file,
  * create the different instances of the objects, and run the system.
@@ -21,45 +23,24 @@ import java.util.ArrayList;
 public class MI6Runner {
     public static void main(String[] args){
         try {
-            //Gson obj = new Gson();
-            System.out.println("First Line of main");
-            String str = new String(Files.readAllBytes(Paths.get("src/main/java/bgu/spl/mics/application/test1.json")));
-            System.out.println("2nd Line of main");
-
+            String str = new String(Files.readAllBytes(Paths.get("src/main/java/bgu/spl/mics/application/test5.json")));
             GsonObj obj = new Gson().fromJson(str, GsonObj.class);
 
 
-            //Reader reader = new FileReader("/home/ziv/IdeaProjects/assignment2/Gson1.json");
-            //GsonObj obg = new Gson().fromJson(reader, GsonObj.class);
-
-            //ArrayList<String> gadgets2 = new ArrayList<String>();
-            ArrayList<Subscriber> ourBuddies = new ArrayList<Subscriber>();
+            ArrayList<Subscriber> ourBuddies = new ArrayList<Subscriber>();//List of all the Subscribers
             String[] gadgets = new String[obj.inventory.size()];
-            for(int i=0;i<obj.inventory.size();i++){
+            for(int i=0;i<obj.inventory.size();i++){//Reading the Gadgets from the JSON
                 gadgets[i] = obj.inventory.get(i);
             }
-            Inventory.getInstance().load(gadgets);//TODO Load the Inventory
-//            for(int i=0;i<gadgets.length;i++){
-//                System.out.println(gadgets[i]);
-//            }
-            //============Check InventoryPrint
-//            Inventory.getInstance().printToFile("/users/studs/bsc/2020/zivshir/IdeaProjects/assignment2/src/main/java/bgu/spl/mics/application/InventoryOutPut.json");
-
+            Inventory.getInstance().load(gadgets);//Loading the Inventory
 
             Agent[] agents = new Agent[obj.squad.length];
             for(int i=0;i<obj.squad.length;i++){
-                agents[i]=new Agent(obj.squad[i].name,obj.squad[i].serialNumber);
+                agents[i]=new Agent(obj.squad[i].name,obj.squad[i].serialNumber);//Reading the Agents from the JSON
             }
-            Squad.GetInstance().load(agents);//TODO Load the Squad
+            Squad.GetInstance().load(agents);//Loading the Squad
             for(int i=0;i<agents.length;i++){
-               // System.out.println(agents[i].getName());
-                //System.out.println(agents[i].getSerialNumber());
             }
-            //String name = obj.services.intelligence[0].missions[0].missionName;
-//            System.out.println(name);
-//            System.out.println(obj.services.M);
-//            System.out.println(obj.services.Moneypenny);
-//            System.out.println(obj.services.time);
 
             for(int i=0;i<obj.services.M;i++){//Create the M instances and push them to the List of Instances
                 int name = i+1;
@@ -67,7 +48,7 @@ public class MI6Runner {
                 ourBuddies.add(m);
             }
 
-            for(int i=0;i<obj.services.Moneypenny;i++){
+            for(int i=0;i<obj.services.Moneypenny;i++){//Create the MoneyPenny instances and push them to the List of Instances
                 int name = i+1;
                 Moneypenny mp = new Moneypenny(Integer.toString(name));
                 ourBuddies.add(mp);
@@ -77,15 +58,10 @@ public class MI6Runner {
             for (int i=0;i<obj.services.intelligence.length;i++){   //Loop all the Intelligence
                 ArrayList<MissionInfo> list = new ArrayList<MissionInfo>();
 
-                Intelligence intel = new Intelligence(Integer.toString(i+1));//TODO Create the Intelligences
+                Intelligence intel = new Intelligence(Integer.toString(i+1));//
                 for(int j=0;j<obj.services.intelligence[i].missions.length;j++){    //Loop all over the missions of each Intel
                     ArrayList<String> agentslist = new ArrayList<>();
-                    for(int l=0;l<obj.services.intelligence[i].missions[j].serialAgentsNumbers.length;l++){ //Loop all over the Agents of the mission
-                        agentslist.add(obj.services.intelligence[i].missions[j].serialAgentsNumbers[l]);
-                        //System.out.println(agentslist.get(l));
-                    }
-//                    System.out.println();
-//                    System.out.println("Parse between every mission created on class MI6");
+                    Collections.addAll(agentslist, obj.services.intelligence[i].missions[j].serialAgentsNumbers);
                     list.add(new MissionInfo(obj.services.intelligence[i].missions[j].name,
                             agentslist,obj.services.intelligence[i].missions[j].gadget,
                             obj.services.intelligence[i].missions[j].timeIssued,obj.services.intelligence[i].missions[j].timeExpired,
@@ -95,24 +71,25 @@ public class MI6Runner {
                 intel.setMissions(list);// Set the list of missions we created to the intelligence.
                 ourBuddies.add(intel);
             }
-//            System.out.println("fuckkkkkkkkkkkkkkkkkkkkkkkkkk 2.0");
             Q q = new Q("1");
             ourBuddies.add(q);
             TimeService ts = new TimeService(obj.services.time);
-            System.out.println("007 J bond");
             //==================Array Of Threads==================
 
             ArrayList<Thread> threadList = new ArrayList<Thread>();
 
-            //=================Init all=================
+            CountDownLatch latch=new CountDownLatch(ourBuddies.size());//Latch to start the TimeService at the right time.
+            //=================Init all==========================
             for(Subscriber sub:ourBuddies){
                 Thread t=new Thread(sub);
                 threadList.add(t);//Adding the thread to threadList
                 t.start();
+                latch.countDown();
             }
 
+            latch.await();
+
             Thread tsTread= new Thread(ts);
-            System.out.println("wow");
             tsTread.start();
 
             for(Thread t : threadList){
@@ -120,7 +97,6 @@ public class MI6Runner {
             }
 
         } catch (IOException ignored) {
-            System.out.println("fuckkkkkkkkkkkkkkkkkkkkkk .CATCH()");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -129,7 +105,6 @@ public class MI6Runner {
         try {
             Inventory.getInstance().printToFile("inventory");
         } catch (IOException e) {
-            System.out.println("FUckkkkkkkkkkkkkkkkkkkkkkkkkkkkkdsdszxxxxxx");
         }
 
     }

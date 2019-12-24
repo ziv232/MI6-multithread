@@ -21,7 +21,7 @@ public class Diary {
 		private static Diary instance = new Diary();
 	}
 	private List<Report> reports;
-	AtomicInteger total;
+	private AtomicInteger total;
 	//Constructor
 	private Diary(){
 		this.reports = new ArrayList<Report>();
@@ -46,7 +46,7 @@ public class Diary {
 	 * adds a report to the diary
 	 * @param reportToAdd - the report to add
 	 */
-	public void addReport(Report reportToAdd){
+	public synchronized void addReport(Report reportToAdd){
 		reports = getReports();
 		reports.add(reportToAdd);//Check if add returns boolean
 

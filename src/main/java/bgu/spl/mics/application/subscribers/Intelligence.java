@@ -20,55 +20,42 @@ import java.util.List;
 public class Intelligence extends Subscriber {
 	private List<MissionInfo> missions;
 	private List<MissionReceivedEvent> eventList;
-	int currTick;
-	int nextMissionTime;
+	private int currTick;
+	private int nextMissionTime;
 
 	public Intelligence(String name) {
 		super(name);
 		this.currTick =0;
 		this.eventList = new ArrayList<MissionReceivedEvent>();
-		System.out.println("Intelligence "+getName()+" created on intelligence class");
-		// TODO Implement this
-	}
-
-	public Intelligence(String name ,List<MissionInfo> missions){
-		super(name);
 	}
 
 	@Override
 	protected void initialize() {
-//		MessageBrokerImpl.getInstance().register(this);
-		for(int i=0;i<this.missions.size();i++){
-			eventList.add(new MissionReceivedEvent(missions.get(i).getMissionName(),
-					(ArrayList<String>) missions.get(i).getSerialAgentsNumbers(),missions.get(i).getGadget(),
-					missions.get(i).getTimeIssued(),missions.get(i).getTimeExpired(),missions.get(i).getDuration()));
+		for (MissionInfo mission : this.missions) {
+			eventList.add(new MissionReceivedEvent(mission.getMissionName(),
+					(ArrayList<String>) mission.getSerialAgentsNumbers(), mission.getGadget(),
+					mission.getTimeIssued(), mission.getTimeExpired(), mission.getDuration()));
 		}
 
 		Callback<TickBroadcast> tickCallBack = (TickBroadcast c) -> {
+			currTick=c.getTick();
+			if (c.isTerminated()) {
+				terminate();
+				return;
+			}
 			if(eventList.size()>0){
 				MissionReceivedEvent toSend = eventList.get(0);	//take first mission without remove
 				nextMissionTime=(toSend.getTimeIssued());	//get the mission time to issued
-//				try {
-//					TickBroadcast msg=((TickBroadcast)MessageBrokerImpl.getInstance().awaitMessage(this));
-					currTick=c.getTick();
-//				System.out.println("tick time "+currTick+ " of intelligence tickCallback");
 
-				if (currTick==(nextMissionTime)) {
-//						msg=(((TickBroadcast) (MessageBrokerImpl.getInstance().awaitMessage(this))));
-//						currTick=msg.getTick();
-//						System.out.println(currTick);
-						eventList.remove(0);
-						getSimplePublisher().sendEvent(toSend);	//TODO WE DID NOT TAKE THE FUTURE AND PASTED IT TO 'M'
+				while (currTick==(nextMissionTime)) {
+					eventList.remove(0);
+					getSimplePublisher().sendEvent(toSend);
+					if (eventList.size() == 0) {
+						break;
+					} else {
+						toSend = eventList.get(0);
+						nextMissionTime = (toSend.getTimeIssued());
 					}
-//				}
-//				catch (InterruptedException e){
-//					Thread.currentThread().interrupt();
-//				}
-			}
-			else {
-				if (c.isTerminated()) {
-					System.out.println("intelligence "+getName()+" is going to terminate");
-					terminate();
 				}
 			}
 		};
