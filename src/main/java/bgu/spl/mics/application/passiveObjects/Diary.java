@@ -29,7 +29,6 @@ public class Diary {
 	}
 
 
-
 	/**
 	 * Retrieves the single instance of this class.
 	 */

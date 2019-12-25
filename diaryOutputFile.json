@@ -1,4 +1,56 @@
 {
-  "reports": [],
-  "total": 0
+  "reports": [
+    {
+      "missionName": "MISSION1",
+      "MNumber": 2,
+      "MoneyPennyNumber": 1,
+      "agentsSerialNumbers": [
+        "001",
+        "002"
+      ],
+      "agentsNames": [
+        "S1",
+        "S2"
+      ],
+      "gadgetName": "I1",
+      "timeIssued": 2,
+      "Qtime": 2,
+      "timeCreated": 2
+    },
+    {
+      "missionName": "MISSION7-WONT Happened",
+      "MNumber": 3,
+      "MoneyPennyNumber": 2,
+      "agentsSerialNumbers": [
+        "003",
+        "007"
+      ],
+      "agentsNames": [
+        "S3",
+        "S7"
+      ],
+      "gadgetName": "I3",
+      "timeIssued": 5,
+      "Qtime": 5,
+      "timeCreated": 5
+    },
+    {
+      "missionName": "MISSION2",
+      "MNumber": 1,
+      "MoneyPennyNumber": 3,
+      "agentsSerialNumbers": [
+        "002",
+        "006"
+      ],
+      "agentsNames": [
+        "S2",
+        "S6"
+      ],
+      "gadgetName": "I2",
+      "timeIssued": 3,
+      "Qtime": 5,
+      "timeCreated": 3
+    }
+  ],
+  "total": 5
 }

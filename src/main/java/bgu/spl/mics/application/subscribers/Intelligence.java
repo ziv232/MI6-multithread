@@ -49,6 +49,7 @@ public class Intelligence extends Subscriber {
 				while (currTick==(nextMissionTime)) {
 					eventList.remove(0);
 					getSimplePublisher().sendEvent(toSend);
+
 					if (eventList.size() == 0) {
 						break;
 					} else {

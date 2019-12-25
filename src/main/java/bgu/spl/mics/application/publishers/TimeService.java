@@ -23,8 +23,7 @@ public class TimeService extends Publisher {
 		super("clock");
 		this.step = 100;
 		this.duration = duration;
-		this.tick = new AtomicInteger(1);
-		//System.out.println("TimeService "+getName()+" created on class TimeService");
+		this.tick = new AtomicInteger(0);
 	}
 
 	@Override
@@ -38,7 +37,6 @@ public class TimeService extends Publisher {
 			getSimplePublisher().sendBroadcast(new TickBroadcast(tick.get(),false));
 			try { Thread.sleep(step); }
 			catch (InterruptedException e){ throw new IllegalStateException(e.getMessage()); }
-//			System.out.println("tick "+tick.get());
 			tick.incrementAndGet();
 
 

@@ -27,7 +27,7 @@ public class Moneypenny extends Subscriber {
 			ArrayList<String>AgentsForMission= (ArrayList<String>) c.getAgentsListForMission();
 			c.setMp(this);
 			boolean answer=Squad.GetInstance().getAgents(AgentsForMission);	//
-			//System.out.println("MoneyPenny "+getName()+ " got a Squad answer===========");
+//			System.out.println("MoneyPenny "+getName()+ " got a Squad answer===========");
 
 			complete(c,answer);
 			if(!answer) {
@@ -36,11 +36,11 @@ public class Moneypenny extends Subscriber {
 			c.setAgentsNames(Squad.GetInstance().getAgentsNames(AgentsForMission));
 			Future<Boolean> toSend=c.getFut();
 			boolean sendOrRelease=toSend.get();
-			//System.out.println("MoneyPenny "+getName()+ " send or receive");
+//			System.out.println("MoneyPenny "+getName()+ " send or receive");
 
 			if(sendOrRelease){
 				Squad.GetInstance().sendAgents((c.getAgentsListForMission()),c.getDuration());
-//				complete(c,true);	//TODO check!!!!!
+				complete(c,true);	//TO DO check!!!!!
 			}
 			else{
 				Squad.GetInstance().releaseAgents(c.getAgentsListForMission());

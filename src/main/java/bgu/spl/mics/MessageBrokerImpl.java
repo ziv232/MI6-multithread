@@ -1,7 +1,5 @@
 package bgu.spl.mics;
 import bgu.spl.mics.application.Messeges.*;
-import bgu.spl.mics.example.messages.ExampleBroadcast;
-import bgu.spl.mics.example.messages.ExampleEvent;
 
 import java.util.Map;
 import java.util.concurrent.*;
@@ -28,6 +26,7 @@ public class MessageBrokerImpl implements MessageBroker {
 		mapOfTopics.putIfAbsent(TickBroadcast.class, new LinkedBlockingQueue<>());
 
 	}
+
 
 	/**
 	 * Retrieves the single instance of this class.
@@ -120,7 +119,14 @@ public class MessageBrokerImpl implements MessageBroker {
 		for(Map.Entry<Class<? extends Message>, LinkedBlockingQueue<Subscriber>> topicQueue: mapOfTopics.entrySet()){
 			topicQueue.getValue().remove(m);
 		}
-		mapOfSubscribers.remove(m);
+		LinkedBlockingDeque<Message> toRemove=mapOfSubscribers.remove(m);
+		while (toRemove.size()>0){
+			Message mess=toRemove.removeFirst();
+			if (mess.getClass()!=TickBroadcast.class){
+				complete((Event)mess,null);
+			}
+
+		}
 //		System.out.println("broker unregistered " + m.getClass()+ m.getName());
 	}
 

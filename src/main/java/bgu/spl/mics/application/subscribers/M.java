@@ -46,9 +46,14 @@ public class M extends Subscriber {
 				return;
 			}
 
-			boolean agentsAvailable=agentsFut.get();
+			Boolean agentsAvailable=agentsFut.get();
 
-			//System.out.println("M "+getName()+" got the future answer on M callback "+ agentsAvailable);
+//			System.out.println("M "+getName()+" got the future answer on M callback "+ agentsAvailable);
+
+			if(agentsAvailable==null){
+				complete(c,false);
+				return;
+			}
 
 			if(agentsAvailable){	//we acquired the agents
 				GadgetAvailableEvent gadgetEvent=new GadgetAvailableEvent(c.getGadget());
